@@ -50,13 +50,13 @@ public:
 
 ### [剑指 Offer 05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
 
-language:JAVA
-
-
-
 charAt() 方法用于返回指定索引处的字符
 
 >runoob.com/java/java-string-charat.html
+
+language:JAVA
+
+TAG:字符串
 
 ```java
 class Solution {

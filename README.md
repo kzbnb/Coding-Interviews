@@ -50,7 +50,7 @@ public:
 
 ### [剑指 Offer 05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
 
-charAt() 方法用于返回指定索引处的字符
++ charAt() 方法用于返回指定索引处的字符
 
 >runoob.com/java/java-string-charat.html
 
@@ -87,3 +87,70 @@ class Solution {
 ```
 
 字符串的处理还是JAVA香.
+
+### [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+
+language:JAVA
+
+TAG:链表
+
+```java
+/*
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] reversePrint(ListNode head) {
+        
+        
+        int count=0;
+        ListNode countPoint=head;
+        ListNode point=head;
+
+        if(head==null)
+        {
+            int[] a=new int [0];
+            return a;
+        }
+    
+        if (countPoint!=null)
+        {
+            count=1;
+        }
+
+        while(countPoint.next!=null)
+        {
+            count++;
+            countPoint=countPoint.next;
+
+        }
+
+
+        int[] data = new int[count];
+        
+        
+        
+        while(point!=null)
+        {
+            count=count-1;
+            data[count]=point.val;
+            point=point.next;
+        }
+        return data;
+
+        
+
+    }
+}
+```
+
+注意判断链表为空的情况；
+
+循环的终止条件注意是指针非空还是next非空。
+
+
+

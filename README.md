@@ -321,3 +321,194 @@ class Solution {
 
 + 注意！mid=(high+low)/2; 由于取整数，导致mid有可能等于low导致死循环。因此当low=mid时，需要mid+1；
 + 注意当numbers[high]==numbers[mid]时，是high--，和low没关系。
+
+
+
+
+
+## [剑指 Offer 10- I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
+
++ 递归：不行。超时。
+
+```java
+class Solution {
+
+
+
+    public int fib(int n) {
+
+
+        
+        if(n==0)
+        {
+            return 0;
+        }
+        else if(n==1)
+        {
+            return 1;
+        }
+        else{
+            return (fib(n-1)+fib(n-2))%1000000007;
+        }
+
+        }
+
+    }
+
+
+
+
+```
+
++ 使用数组。
+
+```java
+class Solution {
+
+
+
+    public int fib(int n) {
+        
+        if(n==0)
+        {
+            return 0;
+        }
+
+        if(n==1)
+        {
+            return 1;
+        }
+
+        int fi[]=new int [n+1];
+
+        fi[0]=0;
+        fi[1]=1;
+
+
+
+
+        for(int i=2;i<n+1;i++)
+        {
+            fi[i]=fi[i-1]+fi[i-2];
+            
+            if(fi[i]>1000000007)
+            {
+                fi[i]=fi[i]%1000000007;
+            }
+            
+        }
+        return fi[n];
+
+
+
+        }
+
+    }
+
+
+
+
+```
+
++ 为了保护数组需要在前面判断n=1和0时的情况。
++ 注意：为了防止溢出，需要在计算过程中就注意取模，而不只是在return处取模。
+
++ 官方题解：其实不需要数组，将其换成两个变量就够了。
+
+ ```java
+  class Solution {
+  
+  
+  
+      public int fib(int n) {
+          
+          if(n==0)
+          {
+              return 0;
+          }
+  
+          if(n==1)
+          {
+              return 1;
+          }
+  
+          //int fi[]=new int [n+1];
+  
+          int a=0;
+          int b=1;
+          int c=0;
+  
+  
+  
+  
+          for(int i=1;i<n+1;i++)
+          {
+              
+              
+              if((a+b)>1000000007)
+              {
+                  c=(a+b)%1000000007;
+              }
+              else{
+                  c=a+b;
+              }
+              
+              b=a;
+              a=c;
+              
+          }
+          return c;
+  
+  
+  
+          }
+  
+      }
+  
+  
+  
+  
+ ```
+
+  
+
+## [剑指 Offer 10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
+
++ 同上
+
+```java
+class Solution {
+    public int numWays(int n) {
+        int a=0,b=0,c=0,count=1;
+        if(n==0)
+        {
+            return 1; 
+        }
+        if(n==1)
+        {
+            return 1;
+        }
+
+        a=1;
+        b=1;
+        while(count<n)
+        {
+            if((a+b)>1000000007)
+            {
+                c=(a+b)%1000000007;
+            }
+            else
+            {
+            c=a+b;
+
+            }
+            a=b;
+            b=c;
+            count++;
+        }
+        return c;
+
+    }
+}
+```
+

@@ -1,3 +1,5 @@
+
+
 # 2021-Coding-Interviews
 
 ### [剑指 Offer 04. 二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
@@ -511,4 +513,101 @@ class Solution {
     }
 }
 ```
+
+
+
+#### [剑指 Offer 12. 矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/)
+
+
+
+tag:深度优先搜索
+
+```java
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        char[] words = word.toCharArray();
+
+        int x=0;
+        int y=0;
+        int count=0;
+        int xboard=board.length;
+        int yboard=board[0].length;
+        while(x<xboard)
+        {
+            while(y<yboard)
+            {
+               
+                if(dfs(x,y,words,count,board)==true)
+                {
+                    return true;
+                }
+                y++;
+            }
+            x++;
+            y=0;
+        }
+        return false;
+        
+
+    
+    }
+    
+        public boolean dfs(int x,int y,char[] words,int count,char[][] boardnew) {
+                    
+        int xboard=boardnew.length;
+        int yboard=boardnew[0].length;
+        boolean a,b,c,d=false;
+   
+        if(x<0||y<0||x==xboard||y==yboard)
+        {
+            return false;
+        }
+   
+
+
+        if(words[count]==boardnew[x][y])
+        {
+            if(count==words.length-1)
+            {
+                return true;
+            }
+            else{
+                boardnew[x][y]='!';
+            // a=dfs(x+1,y,words,count+1,boardnew);
+            // b=dfs(x-1,y,words,count+1,boardnew);
+            // c=dfs(x,y+1,words,count+1,boardnew);
+            // d=dfs(x,y-1,words,count+1,boardnew);
+                
+
+            if(dfs(x+1,y,words,count+1,boardnew)==true||dfs(x-1,y,words,count+1,boardnew)==true||dfs(x,y+1,words,count+1,boardnew)==true||dfs(x,y-1,words,count+1,boardnew)==true)
+            {
+                boardnew[x][y]=words[count];
+                return true;
+            }
+            else{
+                boardnew[x][y]=words[count];
+                return false;
+            }
+            }
+        }
+        else
+        {
+            return false;
+        }
+        
+
+        
+        
+    
+    }
+
+
+
+}
+```
+
++ 建两个函数，一个作为主调用，一个作为dfs来递归。
++ “不走重复路”条件可以使用其它符号代替数组中该字符，本层递归后恢复；也可使用额外数组来记录。
++ 注意好边界的定义。
++ 注意可以使用｜｜（或）来减少时间上的浪费
 

@@ -611,3 +611,173 @@ class Solution {
 + 注意好边界的定义。
 + 注意可以使用｜｜（或）来减少时间上的浪费
 
+#### [剑指 Offer 13. 机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
+
+tag:深度优先搜索
+
+```java
+class Solution {
+    int count=0;
+    public int movingCount(int m, int n, int k) {
+        int result=0;
+        int[][] arrive=new int [m][n];
+        
+
+    
+        for(int i=0;i<m;i++)
+        {
+            for (int j=0;j<n;j++)
+            {
+                if(dfs(i,j,k,m,n,0,0,arrive)==true)
+                {
+                    
+                        result++;
+
+                }
+                
+
+            }
+        }
+        return result;
+
+
+        
+        
+
+
+    }
+
+    boolean dfs(int aimx,int aimy,int k,int m, int n,int nowx,int nowy,int[][]arrive)
+    {
+        int nowx1=nowx/10;
+        int nowx2=nowx%10;
+        int nowy1=nowy/10;
+        int nowy2=nowy%10;
+        int sum=nowx1+nowx2+nowy1+nowy2;
+
+        int aimx1=aimx/10;
+        int aimx2=aimx%10;
+        int aimy1=aimy/10;
+        int aimy2=aimy%10;
+        int sum1=aimx1+aimx2+aimy1+aimy2;
+
+        if(sum1>k)
+        {
+            return false;
+        }
+        count++;
+        if(count>1000000)
+        {
+            int aefsfefweaf=1;
+        }
+
+
+
+
+        if(sum>k||nowx==m||nowy==n||nowx==-1||nowy==-1||arrive[nowx][nowy]==1)
+        {
+            return false;
+        }
+
+        else if(nowx==aimx&&nowy==aimy)
+        {
+         return true;   
+        }
+          arrive[nowx][nowy]=1;
+
+        if(dfs(aimx,aimy,k,m,n,nowx+1,nowy,arrive)||dfs(aimx,aimy,k,m,n,nowx-1,nowy,arrive)||dfs(aimx,aimy,k,m,n,nowx,nowy+1,arrive)||dfs(aimx,aimy,k,m,n,nowx,nowy-1,arrive))
+        
+        {
+            arrive[nowx][nowy]=0;
+            return true;
+        }
+        else
+        {
+            arrive[nowx][nowy]=0;
+            return false;
+        }
+
+
+
+    }
+}
+```
+
+爆栈了，复杂度过高。
+
+```java
+class Solution {
+    int count=0;
+    public int movingCount(int m, int n, int k) {
+        int result=0;
+        int[][] arrive=new int [m][n];
+        
+
+
+        return dfs(k,m,n,0,0,arrive);
+
+
+        
+        
+
+
+    }
+
+    int dfs(int k,int m, int n,int nowx,int nowy,int[][]arrive)
+    {
+        int nowx1=nowx/10;
+        int nowx2=nowx%10;
+        int nowy1=nowy/10;
+        int nowy2=nowy%10;
+        int sum=nowx1+nowx2+nowy1+nowy2;
+
+        // int aimx1=aimx/10;
+        // int aimx2=aimx%10;
+        // int aimy1=aimy/10;
+        // int aimy2=aimy%10;
+        // int sum1=aimx1+aimx2+aimy1+aimy2;
+
+        // if(sum1>k)
+        // {
+        //     return false;
+        // }
+        // count++;
+        // if(count>1000000)
+        // {
+        //     int aefsfefweaf=1;
+        // }
+
+
+
+
+        if(sum>k||nowx==m||nowy==n||nowx==-1||nowy==-1||arrive[nowx][nowy]==1)
+        {
+            return 0;
+        }
+
+          arrive[nowx][nowy]=1;
+
+        return dfs(k,m,n,nowx+1,nowy,arrive)+dfs(k,m,n,nowx-1,nowy,arrive)+dfs(k,m,n,nowx,nowy+1,arrive)+dfs(k,m,n,nowx,nowy-1,arrive)+1;
+        
+
+
+
+    }
+}
+```
+
+绝了。
+
++ 方法一：多余。dfs是对的，不需要再次遍历每一个目标点以确认，造成极大的开销。
+
++ 在这种前后左右+1的深度搜索，就算有条件约束也可以遍历所有点。要充分信任。
+
++ 在记录数量的时候，可以使用
+
+  ```java
+  return dfs(k,m,n,nowx+1,nowy,arrive)+dfs(k,m,n,nowx-1,nowy,arrive)+dfs(k,m,n,nowx,nowy+1,arrive)+dfs(k,m,n,nowx,nowy-1,arrive)+1;
+  ```
+
+  的方法，很好用。
+
+  

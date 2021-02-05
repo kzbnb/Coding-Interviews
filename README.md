@@ -866,3 +866,60 @@ class Solution {
 + 数组记忆使用使用if语句判断，注意记忆递归的return值即可。
 + 注意有Math.max()方法。
 + 注意读题，题目要求从2开始。
+
+
+
+
+
+```java
+import java.math.BigInteger;
+
+class Solution {
+    int [] anser=new int [1000];
+    public int cuttingRope(int n) {
+
+        if(n<2)
+            return 0;
+        if(n==2)
+            return 1;
+            if(n==3)
+            return 2;
+        
+        BigInteger[] dp = new BigInteger[n+1];
+        dp[0]=new BigInteger("1");
+        dp[1]=new BigInteger("1");
+        dp[2]=new BigInteger("2");
+        dp[3]=new BigInteger("3");
+
+
+
+        for(int i=4;i<n+1;i++)
+        {
+            int p=n-i;
+            // if(anser[p]==0)
+            // {
+            //     anser[p]=cuttingRope(p);
+            //     result=Math.max(result,Math.max(anser[p]*i,i*p));
+       
+            // }
+
+            // else
+            // {
+            // result=Math.max(result,Math.max(anser[p]*i,i*p));
+
+            // }
+            dp[i]=new BigInteger("0");
+            for (int j=1;j<=i/2;j++)
+            {
+                dp[i]=dp[i].max(dp[j].multiply(dp[i-j]));
+            }
+
+        }
+
+        return dp[n].mod(new BigInteger("1000000007")).intValue();
+    }
+
+    
+}
+```
+

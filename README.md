@@ -780,4 +780,89 @@ class Solution {
 
   的方法，很好用。
 
-  
+
+
+
+
+
+# [剑指 Offer 14- I. 剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/)
+
+tag：深度优先搜索
+
+法一 直接动态规划
+
+```java
+class Solution {
+    public int cuttingRope(int n) {
+
+        if(n==2||n==1||n==0)
+    {
+        return 1;
+    }
+
+int mark=0;
+int m=n;
+    for(int i=2;i<n;i++)
+    {
+            m=m-i;
+            mark=Math.max(Math.max(i*cuttingRope(m),i*m),mark);
+    }
+    return mark;
+
+    }
+}
+
+```
+
+爆栈。暴力递归不可取，用数组记忆计算结果的方式。
+
+```java
+class Solution {
+            int [] result=new int [58];
+    public int cuttingRope(int n) {
+
+
+
+        if(n==2||n==1||n==0)
+    {
+        return 1;
+    }
+
+        int mark=0;
+        int m=n;
+
+
+    for(int i=2;i<n;i++)
+    {
+            m=m-i;
+
+           if(result[m]==0)
+           {
+            result[m]=cuttingRope(m);
+            int b=Math.max(i*result[m],i*m);
+            mark=Math.max(b,mark);
+
+           }
+           else
+           {
+                           int b=Math.max(i*result[m],i*m);
+            mark=Math.max(b,mark);
+           }
+
+
+
+
+
+            m=m+i;
+    }
+    return mark;
+
+    }
+}
+
+
+```
+
++ 数组记忆使用使用if语句判断，注意记忆递归的return值即可。
++ 注意有Math.max()方法。
++ 注意读题，题目要求从2开始。

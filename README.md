@@ -869,7 +869,7 @@ class Solution {
 
 
 
-
+# [剑指 Offer 14- II. 剪绳子 II](https://leetcode-cn.com/problems/jian-sheng-zi-ii-lcof/)
 
 ```java
 import java.math.BigInteger;
@@ -923,3 +923,128 @@ class Solution {
 }
 ```
 
++ BigInteger的使用和动态规划。
+
++ ```java
+   for (int j=1;j<=i/2;j++)
+              {
+                  dp[i]=dp[i].max(dp[j].multiply(dp[i-j]));
+              }
+  
+  
+  ```
+
++ 经典动态规划
+
+```java
+for (int i = 2; i <= n; i++) {
+            for(int j=1;j<i;j++){
+                int a = dp[i-j]*dp[j];
+                int b = (i-j)*j;
+                int c = dp[i-j]*j;
+                int d = (i-j)*dp[j];
+                int e = dp[i];
+                dp[i] = max(a,b,c,d,e);
+            }
+        }
+```
+
+便于理解版本。
+
+#### [剑指 Offer 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
+
+```java
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+
+        int count=0;
+        while(n!=0)
+        
+        {
+
+            if((n&1)==1)
+            {
+                count++;
+            }
+            n>>>=1;
+        }
+        return count;
+  
+    }
+}
+```
+
+注意，
+
+>java提供两种右移运算符，属于位运算符。位运算符用来对二进制位进行操作。
+>
+>\>> ：算术右移运算符，也称带符号右移。用最高位填充移位后左侧的空位。
+>
+>\>>>：逻辑右移运算符，也称无符号右移。只对位进行操作，用0填充左侧的空位。
+
+
+
+
+
+#### [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+
+tag：快速幂
+
+```java
+class Solution {
+    public double myPow(double x, int n) {
+            double result=1.0;
+        if(x==0)
+        {
+            return 1;
+        }
+
+        long m=n;
+        if(m<0)
+        {
+            x=1/x;
+            m=-m;
+        }
+        while(m>0)
+        {
+            if(m%2==1)
+            {
+                m=m-1;
+                result=result*x;
+                x=x*x;
+                m=m/2;
+
+            }
+            else
+            {
+           x=x*x;
+                m=m/2;
+
+
+            }
+            
+        }
+return result;
+        
+
+    }
+}
+
+
+
+// if (power % 2 == 0) {
+//             //如果指数为偶数
+//             power = power / 2;//把指数缩小为一半
+//             base = base * base % 1000;//底数变大成原来的平方
+//         } else {
+//             //如果指数为奇数
+//             power = power - 1;//把指数减去1，使其变成一个偶数
+//             result = result * base % 1000;//此时记得要把指数为奇数时分离出来的底数的一次方收集好
+//             power = power / 2;//此时指数为偶数，可以继续执行操作
+//             base = base * base % 1000;
+//         }
+```
+
++ 此题为快速幂。
++ https://blog.csdn.net/qq_19782019/article/details/85621386

@@ -2,7 +2,7 @@
 
 # 2021-Coding-Interviews
 
-### [剑指 Offer 04. 二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
+## [剑指 Offer 04. 二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
 
 + error: reference binding to null pointer of type 'const value_type'
 
@@ -48,7 +48,7 @@ public:
 };
 ```
 
-### [剑指 Offer 05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
+## [剑指 Offer 05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
 
 + charAt() 方法用于返回指定索引处的字符
 
@@ -88,7 +88,7 @@ class Solution {
 
 字符串的处理还是JAVA香.
 
-### [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+## [剑指 Offer 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
 
 language:JAVA
 
@@ -221,7 +221,7 @@ return data;
 }
 ```
 
-### [剑指 Offer 07. 重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)
+## [剑指 Offer 07. 重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)
 
 ```java
 /**
@@ -279,7 +279,7 @@ class Solution {
 }
 ```
 
-#### [面试题07. 重建二叉树（递归法，清晰图解）](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/mian-shi-ti-07-zhong-jian-er-cha-shu-di-gui-fa-qin/)
+### [面试题07. 重建二叉树（递归法，清晰图解）](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/mian-shi-ti-07-zhong-jian-er-cha-shu-di-gui-fa-qin/)
 
 注意hashmap的创建方法和put、get。
 
@@ -516,7 +516,7 @@ class Solution {
 
 
 
-#### [剑指 Offer 12. 矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/)
+## [剑指 Offer 12. 矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/)
 
 
 
@@ -611,7 +611,7 @@ class Solution {
 + 注意好边界的定义。
 + 注意可以使用｜｜（或）来减少时间上的浪费
 
-#### [剑指 Offer 13. 机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
+## [剑指 Offer 13. 机器人的运动范围](https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
 
 tag:深度优先搜索
 
@@ -785,7 +785,7 @@ class Solution {
 
 
 
-# [剑指 Offer 14- I. 剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/)
+## [剑指 Offer 14- I. 剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/)
 
 tag：深度优先搜索
 
@@ -869,7 +869,7 @@ class Solution {
 
 
 
-# [剑指 Offer 14- II. 剪绳子 II](https://leetcode-cn.com/problems/jian-sheng-zi-ii-lcof/)
+## [剑指 Offer 14- II. 剪绳子 II](https://leetcode-cn.com/problems/jian-sheng-zi-ii-lcof/)
 
 ```java
 import java.math.BigInteger;
@@ -930,13 +930,14 @@ class Solution {
               {
                   dp[i]=dp[i].max(dp[j].multiply(dp[i-j]));
               }
-  
-  
+   ```
+
+
   ```
 
 + 经典动态规划
 
-```java
+​```java
 for (int i = 2; i <= n; i++) {
             for(int j=1;j<i;j++){
                 int a = dp[i-j]*dp[j];
@@ -947,11 +948,11 @@ for (int i = 2; i <= n; i++) {
                 dp[i] = max(a,b,c,d,e);
             }
         }
-```
+  ```
 
 便于理解版本。
 
-#### [剑指 Offer 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
+## [剑指 Offer 15. 二进制中1的个数](https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/)
 
 ```java
 public class Solution {
@@ -987,7 +988,7 @@ public class Solution {
 
 
 
-#### [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+## [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
 
 tag：快速幂
 
@@ -1048,3 +1049,81 @@ return result;
 
 + 此题为快速幂。
 + https://blog.csdn.net/qq_19782019/article/details/85621386
+
+
+
+## [剑指 Offer 17. 打印从1到最大的n位数](https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/)
+
+```java
+class Solution {
+    public int[] printNumbers(int n) {
+        int p=0;
+        int count=1;
+        while(n>0)
+        {
+            
+            count=count*10;
+            n=n-1;
+        }
+        int []result=new int [count-1];
+        int num=0;
+            while(count>1)
+            {
+                result[num]=num+1;
+                num=num+1;
+                count=count-1;
+            }
+            return result;
+    }
+}
+```
+
+据说原题是想考大数，leetcode没法运行。
+
+https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/solution/mian-shi-ti-17-da-yin-cong-1-dao-zui-da-de-n-wei-2/
+
+
+
+## [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)
+
+tag：链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode deleteNode(ListNode head, int val) {
+        ListNode point=head;
+
+         if(point.val==val)
+            {
+                return point.next;
+            }
+
+        while(point.next!=null)
+        {
+            
+            if(point.next.val==val)
+            {
+                point.next=point.next.next;
+            }
+            else
+            {
+                point=point.next;
+            }
+        }
+
+        return head;
+        
+
+    }
+}
+```
+
++ 链表头出现需要处理一下

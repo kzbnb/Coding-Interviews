@@ -1127,3 +1127,186 @@ class Solution {
 ```
 
 + 链表头出现需要处理一下
+
+
+
+## [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+
++ 我的垃圾写法
+
+```java
+class Solution {
+    public int[] exchange(int[] nums) {
+
+            int[]num =new int [nums.length];
+            int count=0;
+            for(int i=0;i<nums.length;i++)
+            {
+                if(nums[i]%2==1)
+                {
+                    num[count]=nums[i];
+                    count=count+1;
+                }                
+            }
+                for(int i=0;i<nums.length;i++)
+            {
+                if(nums[i]%2==0)
+                {
+                    num[count]=nums[i];
+                     count=count+1;
+
+                }                
+            }
+            return num;
+
+
+
+
+    }
+}
+```
+
+快慢指针写法
+
+```java
+class Solution {
+    public int[] exchange(int[] nums) {
+
+            // int[]num =new int [nums.length];
+            // int count=0;
+            // for(int i=0;i<nums.length;i++)
+            // {
+            //     if(nums[i]%2==1)
+            //     {
+            //         num[count]=nums[i];
+            //         count=count+1;
+            //     }                
+            // }
+            //     for(int i=0;i<nums.length;i++)
+            // {
+            //     if(nums[i]%2==0)
+            //     {
+            //         num[count]=nums[i];
+            //         count=count+1;
+
+            //     }                
+            // }
+            // return num;
+
+            int a=0,b=0;
+            while(a!=nums.length&&b!=nums.length)
+            {
+                while(a<nums.length&&nums[a]%2==1)
+                {//偶
+                    a++;
+                }
+                    //奇
+                    b++;
+              
+
+                if(a!=nums.length&&b!=nums.length&&nums[b]%2==1&&b>a)
+                {
+                int mid=nums[a];
+                nums[a]=nums[b];
+                nums[b]=mid;
+                }
+
+
+
+                
+            }
+
+return nums;
+
+
+
+
+    }
+}
+```
+
++ 注意：快慢指针写法：两个while循环嵌套，一个在外+一个在里面+。
+
+  tag：快慢指针
+
+  
+
+  首尾指针写法
+
+  ```java
+  class Solution {
+      public int[] exchange(int[] nums) {
+  
+              // int[]num =new int [nums.length];
+              // int count=0;
+              // for(int i=0;i<nums.length;i++)
+              // {
+              //     if(nums[i]%2==1)
+              //     {
+              //         num[count]=nums[i];
+              //         count=count+1;
+              //     }                
+              // }
+              //     for(int i=0;i<nums.length;i++)
+              // {
+              //     if(nums[i]%2==0)
+              //     {
+              //         num[count]=nums[i];
+              //         count=count+1;
+  
+              //     }                
+              // }
+              // return num;
+  
+  //             int a=0,b=0;
+  //             while(a!=nums.length&&b!=nums.length)
+  //             {
+  //                 while(a<nums.length&&nums[a]%2==1)
+  //                 {//偶
+  //                     a++;
+  //                 }
+  //                     //奇
+  //                     b++;
+                
+  
+  //                 if(a!=nums.length&&b!=nums.length&&nums[b]%2==1&&b>a)
+  //                 {
+  //                 int mid=nums[a];
+  //                 nums[a]=nums[b];
+  //                 nums[b]=mid;
+  //                 }
+  
+                  
+  //             }
+  
+  // return nums;
+  
+  int a=0,b=nums.length-1;
+  while(a<b)
+  {
+      while(a<nums.length&&nums[a]%2==1)
+      {
+              a=a+1;
+              //偶
+      }
+      while(b>0&&nums[b]%2==0)
+      {
+          b=b-1;
+      }
+      if(a<b)
+      {
+      int mid=nums[a];
+      nums[a]=nums[b];
+      nums[b]=mid;
+      }
+  }
+  return nums;
+  
+  
+      }
+  }
+  ```
+
+  + 注意边界判断
+
+    tag：首尾指针

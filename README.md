@@ -1310,3 +1310,483 @@ return nums;
   + 注意边界判断
 
     tag：首尾指针
+
+## [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+Tag:链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        int count=0;
+        ListNode headmark=head;
+        if(headmark!=null)
+        {
+            count=1;
+        }
+
+        while(headmark.next!=null)
+        {
+        headmark=headmark.next;
+        count=count+1;
+        }
+        headmark=head;
+        int countting=0;
+
+        while((k+countting)<count)
+        {
+        headmark=headmark.next;
+        countting=countting+1;
+        }
+        return headmark;
+
+
+    }
+}
+```
+
+单指针方法，可行。
+
+下面是只遍历一次的方法：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        // int count=0;
+        // ListNode headmark=head;
+        // if(headmark!=null)
+        // {
+        //     count=1;
+        // }
+
+        // while(headmark.next!=null)
+        // {
+        // headmark=headmark.next;
+        // count=count+1;
+        // }
+        // headmark=head;
+        // int countting=0;
+
+        // while((k+countting)<count)
+        // {
+        // headmark=headmark.next;
+        // countting=countting+1;
+        // }
+        // return headmark;
+
+        int m=0;
+        ListNode mark1=head,mark2=head;
+            while(m<k&&mark1!=null)
+            {
+                mark1=mark1.next;
+                m=m+1;
+
+            }
+            while(mark1!=null)
+        {
+            mark1=mark1.next;
+            mark2=mark2.next;
+
+        }
+
+return mark2;
+
+
+
+    }
+}
+```
+
+## [剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
+
++ 迭代的方法。
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+            ListNode cur=head;
+            ListNode pre=null;
+            ListNode next=null;
+
+            if(head!=null&&head.next!=null)
+            {
+            next=head.next;
+            }
+            else
+            {
+              return head;
+            }
+          while(next!=null)
+          {
+            next=cur.next;
+            cur.next=pre;
+            pre=cur;
+            if(next!=null)
+            {
+            cur=next;
+            }
+
+          }
+          return cur;
+            
+
+          
+    }
+}
+```
+
++ 递归的方法。
+
++ ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode(int x) { val = x; }
+   * }
+   */
+  class Solution {
+      public ListNode reverseList(ListNode head) {
+        if(head==null||head.next==null)
+        {
+          return head;
+        }
+             ListNode newhead=reverseList(head.next);
+             head.next.next=head;
+             head.next=null;
+             return newhead;
+             
+      }
+  }
+  ```
+
+  + 注意 head.next=null以保证原头结点不成loop。
+
+## [剑指 Offer 25. 合并两个排序的链表](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode base=new ListNode(0);
+        ListNode mark=base;
+        
+                while(l1!=null&&l2!=null)
+                {
+                    if(l1.val<l2.val)
+                    {
+                        
+                        mark.next=l1;
+                        l1=l1.next;
+
+                    }
+                    else
+                    {
+                        mark.next=l2;
+                        l2=l2.next;
+           
+                    }
+                    mark=mark.next;
+                }
+
+
+                if(l1==null)
+                {
+                    mark.next=l2;
+                }
+                else
+                {
+                    mark.next=l1;
+                }
+
+                return base.next;
+         
+    }
+}
+```
+
+注意：
+
++ 输出的链表头的处理
++ 一条链表遍历到头后的处理
++ 注意new一个链表头
+
+## [剑指 Offer 26. 树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+  //先序遍历
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+
+            if(B==null||A==null)
+            {
+                return false;
+            }
+
+        return dfs(A,B)||isSubStructure(A.left,B)||isSubStructure(A.right,B);
+            
+    }
+
+    boolean dfs(TreeNode A, TreeNode B)
+    {
+        if(A==null&&B==null)
+        {
+            return true;
+        }
+        else if(A==null)
+        {
+            return false;
+        }
+        else if (B==null)
+        {
+            return true;
+        }
+        else
+        {
+            if(A.val==B.val)
+            {
+                return dfs(A.left,B.left)&&dfs(A.right,B.right);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
+```
+
+关键点是边界的处理。
+
+### [匹配类二叉树题目总结](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/solution/pi-pei-lei-er-cha-shu-ti-mu-zong-jie-by-z1m/)
+
+## [剑指 Offer 27. 二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode mirrorTree(TreeNode root) {
+
+        if(root!=null)
+        {
+            TreeNode a=root.left;
+            root.left=root.right;
+            root.right=a;
+            mirrorTree(root.left);
+            mirrorTree(root.right);
+
+        }
+        return root;
+
+    }
+}
+```
+
+就这？
+
+## [剑指 Offer 28. 对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+
+        if(root==null)
+        {
+            return true;
+        }
+            else{
+        return dfs(root.left,root.right);
+            }
+
+    }
+
+    boolean dfs(TreeNode left,TreeNode right)
+    {   
+        if(left==null&&right==null)
+        {
+            return true;
+        }
+        else if(left==null||right==null)
+        {
+            return false;
+        }
+        if(left.val==right.val)
+        {
+            return dfs(left.left,right.right)&&dfs(left.right,right.left);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+}
+```
+
+参照26题的思想。收藏大佬笔记：
+
+> 做递归思考三步：
+>
+> 1. 递归的函数要干什么？
+>
+> - 函数的作用是判断传入的两个树是否镜像。
+> - 输入：TreeNode left, TreeNode right
+> - 输出：是：true，不是：false
+>
+> 1. 递归停止的条件是什么？
+>
+> - 左节点和右节点都为空 -> 倒底了都长得一样 ->true
+> - 左节点为空的时候右节点不为空，或反之 -> 长得不一样-> false
+> - 左右节点值不相等 -> 长得不一样 -> false
+>
+> 1. 从某层到下一层的关系是什么？
+>
+> - 要想两棵树镜像，那么一棵树左边的左边要和二棵树右边的右边镜像，一棵树左边的右边要和二棵树右边的左边镜像
+> - 调用递归函数传入左左和右右
+> - 调用递归函数传入左右和右左
+> - 只有左左和右右镜像且左右和右左镜像的时候，我们才能说这两棵树是镜像的
+>
+> 1. 调用递归函数，我们想知道它的左右孩子是否镜像，传入的值是root的左孩子和右孩子。这之前记得判个root==null。
+
+## [剑指 Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+```java
+class Solution {
+    public int[] spiralOrder(int[][] matrix) {
+        int x=0,y=0,count=0;
+        if(matrix.length==0)
+        {
+            return new int [0];
+        }
+        int you=matrix[0].length-1,xia=matrix.length-1,zuo=0,shang=0;
+        
+        int p=matrix.length*matrix[0].length;
+        int []result=new int [p];
+        
+
+        while(count<p&&x>=0&&y>=0&&x<=matrix[0].length-1&&y<=matrix.length-1)
+        {
+            //左上
+            x=zuo;
+            y=shang;
+
+
+            while(x<=you&&count<p)
+            {
+            result[count]=matrix[y][x];
+            count++;
+            x++;
+            }
+
+            //右上
+            shang++;
+            x=you;
+            y=shang;
+
+            while(y<=xia&&count<p)
+            {
+            result[count]=matrix[y][x];
+            y++;
+            count++;
+            }
+
+            //左下
+            you--;
+            x=you;
+            y=xia;
+           
+            while(x>=zuo&&count<p)
+            {
+               
+            result[count]=matrix[y][x];
+            x--;
+            count++;
+            }
+
+            //右下
+            xia--;
+            x=zuo;
+            y=xia;
+            
+            while(y>=shang&&count<p)
+            {
+               
+            result[count]=matrix[y][x];
+            y--;
+            count++;
+            }
+            zuo++;
+
+
+
+           
+
+            
+        }
+        return result;
+
+    }
+}
+```
+
+上面是自己的垃圾算法。
+
+还可以大循环按圈走,小循环按边走。

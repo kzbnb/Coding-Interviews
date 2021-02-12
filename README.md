@@ -1907,3 +1907,236 @@ class Solution {
 ```
 
 + 模拟法。注意判断能否连续pop出。
+
+## [剑指 Offer 32 - I. 从上到下打印二叉树](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/)
+
+
+
+tag：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] levelOrder(TreeNode root) {
+        Queue<Integer> result=new LinkedList<>();
+        Queue<TreeNode> waitingList=new LinkedList<TreeNode>();
+        int count=0;
+
+        if(root==null)
+        {
+            return new int [0];
+        }
+        waitingList.add(root);
+        while(!waitingList.isEmpty())
+        {
+            TreeNode a=waitingList.poll();
+            result.add(a.val);
+            count++;
+            if(a.left!=null)
+            {
+                waitingList.add(a.left);
+            }
+            if(a.right!=null)
+            {
+                waitingList.add(a.right);
+            }
+            
+
+        }
+        int [] asn=new int [count];
+        int n=0;
+        while(!result.isEmpty())
+        {
+                asn[n]=result.poll();
+                n++;
+        }
+        return asn;
+        
+    }
+}
+```
+
++ 注意 BFS：使用Queue+一个while循环可以解决问题。
+
+  
+
+
+
+## [剑指 Offer 32 - II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> waitingList =new LinkedList<>();
+        Queue<Integer> result=new LinkedList<>();
+        List<List<Integer>> an=new ArrayList();
+
+        if(root==null)
+        {
+           return an;
+        }
+        int m=0;
+
+        result.add(m);
+        waitingList.add(root);
+        
+        while(!waitingList.isEmpty())
+        {
+            TreeNode a=waitingList.poll();
+            int p=result.poll();
+            if(p>an.size()-1)
+            {
+            an.add(new ArrayList());
+            }
+            an.get(p).add(a.val);
+            m=p+1;
+            if(a.left!=null)
+            {
+                result.add(m);
+                waitingList.add(a.left);
+
+            }   
+            if(a.right!=null)
+            {
+                result.add(m);
+                waitingList.add(a.right);
+
+
+
+            }   
+
+        }
+
+        // List<List<Integer>> cancel=new ArrayList();
+        // cancel.add(new ArrayList());
+        // an.removeAll(cancel);
+
+return an;
+
+
+
+
+    }
+}
+```
+
++ 新增了层数的判断。使用变量标记。
+
++ LinkedList类实现了Queue接口，因此我们可以把LinkedList当成Queue来用。
+
++ 主要an.get()方法，可以得到第几个。
+
+  > LinkedeList和ArrayList的区别
+  >
+  > 1、数据结构不同
+  >
+  > ArrayList是Array(动态数组)的数据结构，LinkedList是Link(链表)的数据结构。
+  >
+  > 2、效率不同
+  >
+  > 当随机访问List（get和set操作）时，ArrayList比LinkedList的效率更高，因为LinkedList是线性的数据存储方式，所以需要移动指针从前往后依次查找。
+  >
+  > 当对数据进行增加和删除的操作(add和remove操作)时，LinkedList比ArrayList的效率更高，因为ArrayList是数组，所以在其中进行增删操作时，会对操作点之后所有数据的下标索引造成影响，需要进行数据的移动。
+  >
+  > 3、自由性不同
+  >
+  > ArrayList自由性较低，因为它需要手动的设置固定大小的容量，但是它的使用比较方便，只需要创建，然后添加数据，通过调用下标进行使用；而LinkedList自由性较高，能够动态的随数据量的变化而变化，但是它不便于使用。
+  >
+  > 4、主要控件开销不同
+  >
+  > ArrayList主要控件开销在于需要在lList列表预留一定空间；而LinkList主要控件开销在于需要存储结点信息以及结点指针信息。
+
+
+
+## [剑指 Offer 32 - III. 从上到下打印二叉树 III](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+            Queue<TreeNode>  wait =new LinkedList<>();
+            List<List<Integer>> result=new LinkedList<>();
+            int m=0;
+            if(root==null)
+            {
+                return new LinkedList<>();
+            }
+            else
+            {
+                wait.add(new TreeNode(m));
+                wait.add(root);
+            }
+
+            while(!wait.isEmpty())
+            {
+                int level=wait.poll().val;
+                if(level>result.size()-1)
+                {
+                    result.add(new LinkedList<>());
+                }
+                TreeNode a=wait.poll();
+                result.get(level).add(a.val);
+
+
+               m=level+1;
+                
+                    if(a.left!=null)
+                    {
+                        wait.add(new TreeNode(m));
+                        wait.add(a.left);
+                    }
+                    if(a.right!=null)
+                    {
+                        wait.add(new TreeNode(m));
+                        wait.add(a.right);
+                    }
+                
+                
+            }
+
+            for(int i=0;i<result.size();i++)
+            {
+                if(i%2==1)
+                {
+                    Collections.reverse(result.get(i));
+                
+                }
+            }
+
+            return result;
+
+
+
+
+    }
+}
+```
+
+ 在前面的例子里加上特定层数的反转。（辣鸡方法）
+

@@ -1790,3 +1790,120 @@ class Solution {
 上面是自己的垃圾算法。
 
 还可以大循环按圈走,小循环按边走。
+
+## [剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)
+
+```java
+class MinStack {
+    Stack<Integer> A, B;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+            A=new Stack<>();
+            B=new Stack<>();
+    }
+    
+    public void push(int x) {
+
+        A.push(x);
+        if(!B.isEmpty()&&x<=B.peek())
+        {
+            B.push(x);
+        }
+
+        else if (B.isEmpty())
+        {
+            B.push(x);
+        }
+
+    }
+    
+    public void pop() {
+                    int mark=A.pop();
+                    if(mark==B.peek())
+                    {
+                    B.pop();
+                    }
+    }
+    
+    public int top() {
+            return A.peek();
+    }
+    
+    public int min() {
+            return B.peek();
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.min();
+ */
+```
+
++ 思路是使用两个栈，一个栈实现正常功能，另一个实现min功能。
+
++ 一个栈的思路：判断现push元素是否小于min，若小于则push原min，然后push新min。
+
+  
+
+## [剑指 Offer 31. 栈的压入、弹出序列](https://leetcode-cn.com/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/)
+
+```java
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Deque<Integer> A = new LinkedList<>();
+            int pu=0,po=0;
+            while(pu<pushed.length)
+            {
+                if(pushed[pu]!=popped[po])
+                {
+                    A.push(pushed[pu]);
+                    pu++;
+                }
+                else
+                {
+                    po++;
+                    pu++;
+                    
+                    while(!A.isEmpty()&&po<popped.length&&A.peek()==popped[po])
+                    {
+                        po++;
+                        A.pop();
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+            }
+
+            while(!A.isEmpty())
+            {
+                if(A.pop().equals(popped[po]))
+                {
+                    po++;
+                }
+            }
+
+            if(po==popped.length)
+            {
+                return true;
+            }
+            else
+
+            {
+                return false;
+            }
+
+    }
+}
+```
+
++ 模拟法。注意判断能否连续pop出。

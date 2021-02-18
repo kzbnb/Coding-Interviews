@@ -2138,5 +2138,1029 @@ class Solution {
 }
 ```
 
- 在前面的例子里加上特定层数的反转。（辣鸡方法）
+ 
 
+
+
+在前面的例子里加上特定层数的反转。（辣鸡方法）
+
++ 注意
+
+  ```java
+  Collections.reverse(result.get(i));
+  ```
+
+  其中LinkedList实现了collections接口，可以这样用。
+
+PS：
+
+> Java接口和Java抽象类最大的一个区别，就在于Java抽象类可以提供某些方法的部分实现，而Java接口不可以**（就是interface中只能定义方法，而不能有方法的实现，而在abstract class中则可以既有方法的具体实现，又有没有具体实现的抽象方法）**
+>
+> Java接口是定义混合类型的理想工具，混合类表明一个类不仅仅具有某个主类型的行为，而且具有其他的次要行为。
+
+
+
+
+
++ 这个答案我觉得很好，多用一个队列，然后使用addLast和addFirst特性来做。
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if(root != null) queue.add(root);
+        while(!queue.isEmpty()) {
+            LinkedList<Integer> tmp = new LinkedList<>();
+            for(int i = queue.size(); i > 0; i--) {
+                TreeNode node = queue.poll();
+                if(res.size() % 2 == 0) tmp.addLast(node.val); // 偶数层 -> 队列头部
+                else tmp.addFirst(node.val); // 奇数层 -> 队列尾部
+                if(node.left != null) queue.add(node.left);
+                if(node.right != null) queue.add(node.right);
+            }
+            res.add(tmp);
+        }
+        return res;
+    }
+}
+
+
+```
+
+## [剑指 Offer 33. 二叉搜索树的后序遍历序列](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/)
+
+```java
+class Solution {
+    public boolean verifyPostorder(int[] postorder) {
+        
+        return helper(postorder,0,postorder.length-1);
+
+    }
+
+    boolean helper(int[] postorder,int start,int end)
+    {
+
+        if(!(start<end))
+        {
+            return true;
+        }
+        int small=start;
+        while(postorder[small]<postorder[end])
+        {
+            small++;
+        }
+        int big=small;
+        while(postorder[big]>postorder[end])
+        {
+            big++;
+        }
+        if(big==end)
+        {
+            
+            return helper(postorder,start,small-1)&&helper(postorder,small,end-1);
+        }
+        else
+
+        {
+            return false;
+        }
+
+
+    }
+}
+
+
+```
+
++ 没做出来的主要原因是没认清二叉搜索树的定义（不是平衡的）。
++ 可以使用传数组+开始+结束下标的方式进行递归。
+
+
+
+## [剑指 Offer 34. 二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+            List<List<Integer>> result=new LinkedList<>();
+
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<Integer> wait=new LinkedList<>();
+        dfs(root,sum,wait);
+        return result;
+
+    }
+
+       void dfs(TreeNode root, int sum,List<Integer> li)
+     {
+            if(root==null)
+            {
+                return;
+            }
+            List<Integer> lili=new LinkedList<>();
+            lili.addAll(li);
+            if(root.left==null&&root.right==null)
+            {
+                if(sum==root.val)
+                {
+                    lili.add(root.val);
+                    result.add(lili);
+                    return ;
+                    
+                }
+                return ;
+                
+            }
+            
+
+            int val=root.val;
+            int newSum=sum-val;
+            lili.add(val);
+            if(root.left!=null)
+            {
+
+                dfs(root.left,newSum,lili);
+            }
+            if(root.right!=null)
+            {
+                dfs(root.right,newSum,lili);
+            }
+
+
+
+     }
+}
+```
+
+![image-20210214005048849](/Users/mac/Library/Application Support/typora-user-images/image-20210214005048849.png)
+
+纪念一下，自己写的垃圾算法。
+
++  lili.addAll(li); 复制整个数组到新的数组可以用addAll()方法。
+
+## [剑指 Offer 35. 复杂链表的复制](https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/)
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+class Solution {
+    public Node copyRandomList(Node head) {
+        if(head==null)
+        {
+            return null;
+        }
+
+        Map<Node,Node> map=new HashMap<>();
+        Node point=head;
+        
+
+
+        while(point!=null)
+
+        {
+            
+            map.put(point, new Node(point.val));
+            
+            point=point.next;
+        }
+
+        point=head;
+        while(point!=null)
+        {
+            map.get(point).next=map.get(point.next);
+            map.get(point).random=map.get(point.random);
+            point=point.next;
+
+        }
+        return map.get(head);
+        
+    }
+}
+```
+
++ 注意hash的使用方法
+
++ ```java
+  Map<Node, Node> map = new HashMap<>();
+              map.put(point, new Node(point.val));
+              map.get(point).next=map.get(point.next);
+  
+  ```
+
+  https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/solution/jian-zhi-offer-35-fu-za-lian-biao-de-fu-zhi-ha-xi-/
+
+  还有借用原链表，复制一份新链表+  .next，然后再拆开的办法。
+
+## [剑指 Offer 36. 二叉搜索树与双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/)
+
++ 这题是关键是二叉搜索树的性质：中序遍历为保证由小到大。
+
++ 实现中序遍历，即把代码放中间，然后dfs递归。
+
++ 注意头尾的处理
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+    Node pre,head;
+    public Node treeToDoublyList(Node root) {
+        if(root!=null)
+        {
+        dfs(root);
+
+
+        }
+        else
+        {
+            return null;
+        }
+
+        pre.right=head;
+        head.left=pre;
+        return head;
+
+        
+    }
+
+    void dfs(Node cur)
+    {
+        
+        if(cur==null)
+        {
+            return ;
+        }
+                int a=cur.val;
+
+        dfs(cur.left);
+        if(pre==null)
+        {
+            head=cur;
+        }
+        cur.left=pre;
+        if(pre!=null)
+        {
+        pre.right=cur;
+        }
+        pre=cur;
+
+        dfs(cur.right);
+    }
+}
+```
+
+## [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
+
+```java
+class Solution {
+
+    char[] pool;
+    List<String> answer=new LinkedList<String>();
+    public String[] permutation(String s) {
+            pool=s.toCharArray();
+            dfs(0);
+            return answer.toArray(new String[answer.size()]);
+
+    }
+
+    void dfs(int x)
+    {
+        if(x==pool.length-1)
+        {
+            answer.add(String.valueOf(pool));///////////
+        }
+        HashSet set=new HashSet<>();
+        for(int i=x;i<pool.length;i++)
+        {
+            if(set.contains(pool[i]))
+            {
+                continue ;
+            }
+            set.add(pool[i]);
+            swap(i,x);
+            dfs(x+1);
+            swap(x,i);
+        }
+    }
+
+
+    void swap(int a,int b)
+    {
+        char temp=pool[a];
+        pool[a]=pool[b];
+        pool[b]=temp;
+    }
+}
+```
+
++ 在这用『换位』来表示各种组合。
+
++ String.toCharArray();
+
++ String.valueOf(pool)//将基本数据型态转换成 String
+
++ HashSet set=new HashSet<>();//该容器中只能存储不重复的对象。
+
++    void swap(int a,int b)
+      {
+          char temp=pool[a];
+          pool[a]=pool[b];
+          pool[b]=temp;
+      }
+
+  技巧有点多
+
+## [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+            HashMap<Integer,Integer> map= new HashMap<>();
+            int i=0;
+            while(i<nums.length)
+            {
+                if(map.get(nums[i])==null)
+                {
+                    map.put(nums[i], 1);
+                    
+                }
+                else
+                {
+                    int a=map.get(nums[i])+1;
+                    if(a>nums.length/2)
+                    {
+                        return nums[i];
+                    }
+                    map.remove(nums[i]);
+                    map.put(nums[i], a);
+                }
+                i++;
+                
+            }
+            return nums[0];
+            
+    }
+}
+```
+
+![image-20210216020720636](/Users/mac/Library/Application Support/typora-user-images/image-20210216020720636.png)
+
+又费时间又费空间，我真牛逼
+
+https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/solution/mian-shi-ti-39-shu-zu-zhong-chu-xian-ci-shu-chao-3/
+
++ ！！！！众数问题可以用摩尔投票法！！！！
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+            //HashMap<Integer,Integer> map= new HashMap<>();
+            // if(nums.length==1)
+            // {
+            //     return nums[0];
+            // }
+            int i=0;
+            int voute=0;
+            int z=nums[0];
+            while(i<nums.length)
+            {
+                if(z!=nums[i])
+                {
+                    voute--;
+                }
+                else
+                {
+                    voute++;
+                }
+                if(voute==0)
+                    {
+                    z=nums[i];
+                    }
+                else
+                {
+                    i++;
+                }
+                    
+            }
+            return z;
+            
+    }
+}
+```
+
+## [剑指 Offer 40. 最小的k个数](https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/)
+
+法一：快排。注意点很多
+
+```java
+class Solution {
+    public int[] getLeastNumbers(int[] arr, int k) {
+        qs(0,arr.length-1,arr);
+            return Arrays.copyOf(arr, k);
+
+    }
+
+
+
+
+void qs(int zuo,int you,int []arr)
+{
+    if(zuo>=you)
+    {
+        return;
+    }
+    int origzuo=zuo,origyou=you;
+    
+    int base=arr[zuo];
+    int nextbase=0;
+    while (zuo < you){
+            while (zuo < you && arr[you] >= base){
+                you -- ;
+            }
+            while (zuo < you && arr[zuo] <= base){
+                zuo ++ ;
+            }
+            swap(zuo,you,arr);
+        }
+        swap(origzuo,zuo,arr);
+        nextbase=zuo;
+        qs(origzuo,nextbase-1,arr);
+        qs(nextbase+1,origyou,arr);
+
+
+}
+
+void swap(int one,int two,int []arr)
+{
+    int temp=arr[one];
+    arr[one]=arr[two];
+    arr[two]=temp;
+}
+
+
+}
+```
+
++ 大循环嵌套俩小循环，大循环判断条件为俩哨兵相遇。
++ 注意若取最左的值为基准，则要右边先动。
+
+原因：因为最终停下后，0号位需要放置一个小于baseline的数，而右边先动则保证了最终取出的数符合左👈🏻 边的规则，即小于baseline。
+
++ 注意在判断哨兵移动时需要取等号。
++ 每次都要判断两者有无相遇。
++ 主要保存原数组范围。
+
+法二：大顶堆。
+
+```java
+class Solution {
+    public int[] getLeastNumbers(int[] arr, int k) {
+        if(k==0||arr==null)
+        {
+                return new int [0];
+        }
+        //List<Integer>result=new LinkedList<Integer>();
+        int [] result=new int [k];
+        PriorityQueue<Integer> dui=new PriorityQueue<>(k,new Comparator<Integer>()
+        {
+            //@override
+            public int compare (Integer o1,Integer o2)
+            {
+                return o2-o1;
+            }
+            });
+            int count=0;
+        while(count<arr.length)
+        {
+            if(count<k)
+            {
+                dui.offer(arr[count]);
+            }
+            else
+            {
+                if(arr[count]<dui.peek())
+                {
+                    dui.poll();
+                    dui.offer(arr[count]);
+                }
+            }
+            count++;
+        }
+        count=0;
+        while(!dui.isEmpty())
+        {
+                result[count]=dui.poll();
+                count++;
+        }
+        return result;
+        
+        }
+}
+
+```
+
+> https://blog.csdn.net/hefenglian/article/details/81807527
+
+注意点也很多。
+
++ PriorityQueue默认为小顶堆，需要override Comparator，以传参的形式。或    PriorityQueue<Integer> dui=new PriorityQueue<>((r1,r2)->r2-r1);
++ PriorityQueued的add是offer
+
+## [剑指 Offer 42. 连续子数组的最大和](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)
+
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+            // if(nums.length==0)
+            // {
+            //     return 0;
+            // }
+            int [] result=new int [nums.length];
+            int count=0;
+            
+            result[count++]=nums[0];
+
+
+            while(count<result.length)
+            {
+                if(result[count-1]<0)
+                {
+                    result[count]=nums[count];
+                }
+                else
+                {
+                    result[count]=nums[count]+result[count-1];
+                }
+                count++;
+            }
+            count=0;
+            int max=Integer.MIN_VALUE;
+            while(count<result.length)
+            {
+                if(result[count]>max)
+                {
+                    max=result[count];
+                }
+                count++;
+            }
+           return max;
+            
+    }
+}
+```
+
+动态规划。
+
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+            
+            int count=1;
+
+            while(count<nums.length)
+            {
+                if(nums[count-1]<0)
+                {
+                    nums[count]=nums[count];
+                }
+                else
+                {
+                    nums[count]=nums[count]+nums[count-1];
+                }
+                count++;
+            }
+            count=0;
+            int max=Integer.MIN_VALUE;
+            while(count<nums.length)
+            {
+                if(nums[count]>max)
+                {
+                    max=nums[count];
+                }
+                count++;
+            }
+           return max;
+            
+    }
+}
+```
+
+不浪费空间版本。
+
+## [剑指 Offer 44. 数字序列中某一位的数字](https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/)
+
+```java
+class Solution {
+    public int findNthDigit(int n) {
+        //List<Character> save=new LinkedList<Character>();
+       
+        int counter=0;
+        int count=1;
+        int markp=0;
+
+        while(count<n)
+        {
+            String a=String.valueOf(count);
+            int p=0;
+            while(p<a.length())
+            {
+                counter++;
+                if(counter==n)
+                {
+                    markp=p;
+                    break;
+                }
+                p++;
+            }
+            if(counter==n)
+                {
+                    break;
+                }
+            count++;
+           
+        }
+        
+        String a=String.valueOf(count);
+        char p=a.charAt(markp);
+        String stringc = String.valueOf(p);
+        int sdaf=Integer.parseInt(stringc);
+        
+
+
+
+        return sdaf;
+        
+    }
+}
+```
+
+```java
+class Solution {
+    public int findNthDigit(int n) {
+        //List<Character> save=new LinkedList<Character>();
+       
+        int counter=0;
+        int count=1;
+        int markp=0;
+
+        while(count<n)
+        {
+            String a=String.valueOf(count);
+            
+
+            if(counter>=997)
+            {
+                        int y=0;
+            }
+            counter=a.length()+counter;
+            if(counter>n)
+                {
+                    markp=n-(counter-a.length())-1;
+                    //count++;
+                    
+                    break;
+                }
+                else if(counter==n)
+                {
+                    markp=a.length()-1;
+                    //count--;
+                    break;
+                }
+            count++;
+           
+        }
+
+        // while(counter<n)
+        //     {
+        //         counter++;
+        //         markp++;
+
+        //     }
+
+        
+        
+        String a=String.valueOf(count);
+        char p=a.charAt(markp);
+        String stringc = String.valueOf(p);
+        int sdaf=Integer.parseInt(stringc);
+        
+
+
+
+        return sdaf;
+        
+    }
+}
+```
+
+
+
+思成的方法，爆时间了。
+
++ 注意后面取int某一位，需要 1.转String 2. 取char 3.转String 4.转Int
+
+  同方法的StringBuilder版本
+
+  ```java
+  class Solution {
+      public static int findNthDigit(int n) {
+          StringBuilder s = new StringBuilder();
+          int all = 0;
+          for(int i = 0 ;all <= n ; i++){
+              all += ((i / 10) + 1);
+              s.append("" + i);
+          }
+          return Integer.parseInt(String.valueOf(s.charAt(n)));
+      }
+  }
+  ```
+
+  标注答案，傻逼题找规律
+
+  ```java
+  javaclass Solution {
+      public int findNthDigit(int n) {
+          int digit = 1;   // n所在数字的位数
+          long start = 1;  // 数字范围开始的第一个数
+          long count = 9;  // 占多少位
+          while(n > count){
+              n -= count;
+              digit++;
+              start *= 10;
+              count = digit * start * 9;
+          }
+          long num = start + (n - 1) / digit;
+          return Long.toString(num).charAt((n - 1) % digit) - '0';
+      }
+  }
+  ```
+
+  
+
+## [剑指 Offer 45. 把数组排成最小的数](https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/)
+
+```java
+class Solution {
+    public String minNumber(int[] nums) {
+        StringBuilder res=new StringBuilder();
+        Queue q=new PriorityQueue<String>(new Comparator<String>()
+        {
+            public int compare(String o1,String o2)
+
+            {
+                return (o1+o2).compareTo(o2+o1);
+            }
+        });
+        int count=0;
+        while(count<nums.length)
+        {
+            q.add(nums[count++]+"");
+
+        }
+        while(!q.isEmpty())
+        {
+            res.append(q.poll());
+        }
+        return res.toString();
+    }
+}
+
+
+
+
+```
+
++ StringBuilder res=new StringBuilder(); 注意是append
+
++ 最关键的是，(o1+o2).compareTo(o2+o1)
+
++ ```java
+   Queue q=new PriorityQueue<String>(new Comparator<String>()
+          {
+              public int compare(String o1,String o2)
+    
+              {
+                  return (o1+o2).compareTo(o2+o1);
+              }
+          });
+  ```
+
+  小顶堆
+
+## [剑指 Offer 46. 把数字翻译成字符串](https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/)
+
+```java
+class Solution {
+    public int translateNum(int num) {
+        String snum=String.valueOf(num);
+        char[] cnum=snum.toCharArray();
+        int []dp=new int [cnum.length];
+        dp[0]=1;
+        //dp[1]=1;
+        int count=1;
+        
+
+        while(count<cnum.length)
+        {
+            int b=Integer.parseInt(String.valueOf(cnum[count-1]));
+            int c=Integer.parseInt(String.valueOf(cnum[count]));
+            int a=b*10+c;
+            dp[count]=dp[count-1];
+            if(a<26&&a>9)
+            {
+                if(count==1)
+                {
+                    dp[1]=2;
+                }
+                else
+                {
+                    dp[count]=dp[count-1]+dp[count-2];
+                }
+            }
+            else
+            {
+                if(count==1)
+                {
+                    dp[1]=1;
+                }
+            }
+            count++;
+        }
+        return dp[cnum.length-1];
+    }
+}
+```
+
+动态规划。
+
++ b=Integer.parseInt(String.valueOf(cnum[count-1]));///char转int
++ 可以用滚动数组优化
++ 最重要的逻辑：*f*(*i*)=*f*(*i*−1)+*f*(*i*−2)
+
+
+
+## 
+
+## [剑指 Offer 47. 礼物的最大价值](https://leetcode-cn.com/problems/li-wu-de-zui-da-jie-zhi-lcof/)
+
+```java
+class Solution {
+    public int maxValue(int[][] grid) {
+            int m= grid.length ;
+            int n=grid[0].length;
+            int [][]res=new int [m][n];
+           
+            
+
+            for(int i=0;i<m;i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    int a=0,b=0;
+                    if(i!=0)
+                    {
+                        a=res[i-1][j];
+                      
+                    }
+                    if(j!=0)
+                    {
+                        b=res[i][j-1];
+                    }
+                        int p=grid[i][j];
+                        
+                        res[i][j]=Math.max(a, b)+p;
+                        int q=res[i][j];
+                        int wfweewf=q+1;
+                    
+                }
+            }
+            return res[m-1][n-1];
+    }
+}
+```
+
+动态规划，关键点在于一个点的最大值等于其上点或左点的最大值+本身值。 
+
++ 可只使用自己的原数组进行
+
+
+
+## 
+
+## [剑指 Offer 48. 最长不含重复字符的子字符串](https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/)
+
+```java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+
+        
+        int[] dp=new int [s.length()];
+        int count=0;
+        int trueRes=0;
+        while(count<s.length())
+        {
+            int poi=count;
+            int res=0;
+            HashSet<Character> set=new HashSet<Character>();
+            while(poi<s.length()&&!set.contains(s.charAt(poi)))
+            {
+                set.add(s.charAt(poi++));
+                res++;
+            }
+            if(res>trueRes)
+            {
+                trueRes=res;
+            }
+            count++;
+        }
+        return trueRes;
+
+
+    }
+}
+```
+
+## [剑指 Offer 49. 丑数](https://leetcode-cn.com/problems/chou-shu-lcof/)
+
+```java
+class Solution {
+    public int nthUglyNumber(int n) {
+        Queue<Integer> min=new PriorityQueue<Integer>();
+        //int []dp=new int [n];
+        //dp[0]=1;
+        // dp[1]=2;
+        // dp[2]=3;
+        // dp[3]=4;
+        // dp[4]=5;
+        
+            for(int i=0;i<20;i++)
+            {
+
+                for(int m=0;m<40;m++)
+                {
+                    for(int p=0;p<40;p++)
+                    {
+                            double plus=Math.pow(2, p)*Math.pow(3, m)*Math.pow(5, i);
+
+                            min.add((int)plus);
+                    }
+                }
+            }
+            int count=1;
+            //min.poll();
+            while(count<n)
+            {
+                //dp[count++]=min.poll();
+                min.poll();
+                count++;
+            }
+            return min.poll();
+
+
+        
+
+    }
+}
+```
+
+这不炒？

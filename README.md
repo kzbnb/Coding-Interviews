@@ -3164,3 +3164,163 @@ class Solution {
 ```
 
 这不炒？
+
+
+
+## [剑指 Offer 50. 第一个只出现一次的字符](https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/)
+
+```java
+class Solution {
+    public char firstUniqChar(String s) {
+            //HashSet<Character> set = new HashSet();
+            HashMap<Character,Integer> table=new HashMap<>();
+            for(int i=0;i<s.length();i++)
+            {
+                if(table.get(s.charAt(i))==null)
+                {
+                    table.put(s.charAt(i),1);
+
+                }
+                else
+                {
+                    table.put(s.charAt(i),2);
+                }
+            }
+
+            for(int i=0;i<s.length();i++)
+            {
+                if(table.get(s.charAt(i))==1)
+                {
+                    return s.charAt(i);
+                }
+               
+            }
+            return ' ';
+        
+    }
+}
+
+
+```
+
+用hashtable，舒服得一p。
+
+换成LinkedHashMap，更省时间。
+
+> 
+
+## [剑指 Offer 52. 两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        HashSet<ListNode> set=new HashSet<>();
+        ListNode pointA=headA;
+        ListNode pointB=headB;
+
+        while(pointA!=null)
+        {
+            set.add(pointA);
+            pointA=pointA.next;
+        }
+        while(pointB!=null)
+        {
+            if(set.contains(pointB))
+            {
+                return pointB;
+            }
+            else
+            {
+                pointB=pointB.next;
+            }
+        }
+        return null;
+    }
+}
+```
+
+hashmap大展神威，开销惨不忍睹
+
+双指针，绝了，A+C+B=B+C+A。
+
+> https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/solution/shuang-zhi-zhen-fa-lang-man-xiang-yu-by-ml-zimingm/
+
+## [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+
+
+
+      int left=0,right=nums.length,count=0;
+      if(right==0)
+      {
+          return 0;
+      }
+      while(left<right)
+      {
+          int mid=(left+right)/2;
+          if(nums[mid]>target)
+          {
+              right=mid-1;
+          }
+          else {
+            if(nums[mid]<target)
+            {
+                left=mid+1;
+            }
+            else
+            {
+                left=mid;
+                break;
+            }
+          }
+      }
+        right=left+1;
+       while(left>=0&&left<nums.length&&nums[left]==target)
+                {
+                    left--;
+                    count++;
+                }
+                while(right>=0&&right<nums.length&&nums[right]==target)
+                {
+                    right++;
+                    count++;
+                }
+      return count;
+    }
+}
+```
+
+据说只能用二分。
+
++ 关键点一
+
+  ```
+   left=mid+1;
+    right=mid-1;
+  ```
+
++ 关键点二
+
+  后面的个数计算while要在定位while之外。
+
+  + ```
+     right=left+1;
+    ```
+
+    
+
+  

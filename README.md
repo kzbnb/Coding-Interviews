@@ -3323,4 +3323,220 @@ class Solution {
 
     
 
-  
+## [剑指 Offer 53 - II. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
+
+```c++
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        
+
+
+        int left=0,right=nums.size();
+        while(right>left)
+        {
+            int mid=(left+right)/2;
+            if(mid!=nums[mid])
+            {
+                right=mid;
+            }
+            else
+            {
+                left=mid+1;
+            }
+        }
+        return left;
+        
+    }
+};
+```
+
+# 对从小到大排好的数组，一定要 left=mid+1。否则，就会一直有left = mid=right-1<right,导致无法跳出循环。
+
+## [剑指 Offer 54. 二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    int res=0;
+    vector<int>li;
+    
+public:
+    int kthLargest(TreeNode* root, int k) {
+        int m=0;
+        dfs(root);
+        return li[li.size()-k];
+
+        
+    }
+
+    void dfs(TreeNode* root)
+    {
+        if(root==NULL)
+        {
+            return ;
+        }
+
+        dfs(root->left);
+        li.push_back(root->val);
+        dfs(root->right);
+        
+    }
+};
+```
+
+遇到二叉树==中序遍历产生有序数组。
+
+## [剑指 Offer 55 - I. 二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/)
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    int level=0;
+public:
+    int maxDepth(TreeNode* root) {
+           dfs(root,1);
+           return level;
+    }
+
+    void dfs(TreeNode* root,int m)
+    {
+        if(root==NULL)
+        {
+            return ;
+        }
+        if(m>level)
+        {
+            level=m;
+        }
+        dfs(root->left,m+1);
+        dfs(root->right,m+1);
+    }
+
+};
+```
+
+如果不能用递归
+
+```c
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    
+public:
+    int maxDepth(TreeNode* root) {
+          TreeNode* point=root;
+          queue<TreeNode*> que;
+//      
+        if(root==NULL)
+        {
+            return 0;
+        }
+          que.push(root);
+            int level=0;
+          while(!que.empty())
+          {
+            queue<TreeNode*> que2;
+            while(!que.empty())
+            {
+                TreeNode* p=que.front();
+                if(p->left!=NULL)
+                {
+                    que2.push(p->left);
+                }
+                if(p->right!=NULL)
+                {
+                    que2.push(p->right);
+                }
+                que.pop();
+                
+            }
+            while(!que2.empty())
+            {
+                TreeNode* p=que2.front();
+                que.push(p);
+                que2.pop();
+            }
+            level++;
+
+          }
+
+           return level;
+    }
+
+
+
+};
+```
+
+记好了，BFS。
+
+## [剑指 Offer 55 - II. 平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+
+        return dfs(root);
+        
+    }
+
+    int getHigh(TreeNode* root){
+        if(root==NULL) return 0;
+        int a=getHigh(root->right);
+        int b=getHigh(root->left);
+        return (a>b?a:b)+1;
+    }
+
+    bool dfs(TreeNode* root)
+    {
+        if(root==NULL)
+        {
+            return true;
+        }
+        if(abs(getHigh(root->left)-getHigh(root->right))>1)
+        {
+            return false;
+        }
+        
+        else
+        {
+            return dfs(root->left)&&dfs(root->right);
+        }
+    }
+};
+```
+

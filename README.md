@@ -3617,3 +3617,66 @@ public:
 // };
 ```
 
+#### [剑指 Offer 59 - II. 队列的最大值](https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/)
+
+```c++
+class MaxQueue {
+    deque<int>first;
+    deque<int>second;
+public:
+    MaxQueue() {
+        deque<int>first={};
+        deque<int>second={};
+    }
+    
+    int max_value() {
+        if(second.empty())
+        {
+            return -1;
+        }
+            return second.front();
+    }
+    
+    void push_back(int value) {
+        first.push_back(value);
+        while(!second.empty()&&second.front()<value)
+        {
+            second.pop_front();
+        }
+        while(!second.empty()&&second.back()<value)
+        {
+            second.pop_back();
+        }
+        second.push_back(value);
+    }
+    
+    int pop_front() {
+        if(first.empty())
+        {
+            return -1;
+        }
+        if(first.front()==second.front())
+        {
+            second.pop_front();
+        }
+        int a=first.front();
+       
+        first.pop_front();
+        return a;
+
+    
+
+    }
+};
+
+
+/**
+ * Your MaxQueue object will be instantiated and called as such:
+ * MaxQueue* obj = new MaxQueue();
+ * int param_1 = obj->max_value();
+ * obj->push_back(value);
+ * int param_3 = obj->pop_front();
+ */
+```
+
+双队列+单调队列即可

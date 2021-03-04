@@ -1310,3 +1310,2310 @@ return nums;
   + 注意边界判断
 
     tag：首尾指针
+
+## [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+Tag:链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        int count=0;
+        ListNode headmark=head;
+        if(headmark!=null)
+        {
+            count=1;
+        }
+
+        while(headmark.next!=null)
+        {
+        headmark=headmark.next;
+        count=count+1;
+        }
+        headmark=head;
+        int countting=0;
+
+        while((k+countting)<count)
+        {
+        headmark=headmark.next;
+        countting=countting+1;
+        }
+        return headmark;
+
+
+    }
+}
+```
+
+单指针方法，可行。
+
+下面是只遍历一次的方法：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        // int count=0;
+        // ListNode headmark=head;
+        // if(headmark!=null)
+        // {
+        //     count=1;
+        // }
+
+        // while(headmark.next!=null)
+        // {
+        // headmark=headmark.next;
+        // count=count+1;
+        // }
+        // headmark=head;
+        // int countting=0;
+
+        // while((k+countting)<count)
+        // {
+        // headmark=headmark.next;
+        // countting=countting+1;
+        // }
+        // return headmark;
+
+        int m=0;
+        ListNode mark1=head,mark2=head;
+            while(m<k&&mark1!=null)
+            {
+                mark1=mark1.next;
+                m=m+1;
+
+            }
+            while(mark1!=null)
+        {
+            mark1=mark1.next;
+            mark2=mark2.next;
+
+        }
+
+return mark2;
+
+
+
+    }
+}
+```
+
+## [剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
+
++ 迭代的方法。
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+            ListNode cur=head;
+            ListNode pre=null;
+            ListNode next=null;
+
+            if(head!=null&&head.next!=null)
+            {
+            next=head.next;
+            }
+            else
+            {
+              return head;
+            }
+          while(next!=null)
+          {
+            next=cur.next;
+            cur.next=pre;
+            pre=cur;
+            if(next!=null)
+            {
+            cur=next;
+            }
+
+          }
+          return cur;
+            
+
+          
+    }
+}
+```
+
++ 递归的方法。
+
++ ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode(int x) { val = x; }
+   * }
+   */
+  class Solution {
+      public ListNode reverseList(ListNode head) {
+        if(head==null||head.next==null)
+        {
+          return head;
+        }
+             ListNode newhead=reverseList(head.next);
+             head.next.next=head;
+             head.next=null;
+             return newhead;
+             
+      }
+  }
+  ```
+
+  + 注意 head.next=null以保证原头结点不成loop。
+
+## [剑指 Offer 25. 合并两个排序的链表](https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode base=new ListNode(0);
+        ListNode mark=base;
+        
+                while(l1!=null&&l2!=null)
+                {
+                    if(l1.val<l2.val)
+                    {
+                        
+                        mark.next=l1;
+                        l1=l1.next;
+
+                    }
+                    else
+                    {
+                        mark.next=l2;
+                        l2=l2.next;
+           
+                    }
+                    mark=mark.next;
+                }
+
+
+                if(l1==null)
+                {
+                    mark.next=l2;
+                }
+                else
+                {
+                    mark.next=l1;
+                }
+
+                return base.next;
+         
+    }
+}
+```
+
+注意：
+
++ 输出的链表头的处理
++ 一条链表遍历到头后的处理
++ 注意new一个链表头
+
+## [剑指 Offer 26. 树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+  //先序遍历
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+
+            if(B==null||A==null)
+            {
+                return false;
+            }
+
+        return dfs(A,B)||isSubStructure(A.left,B)||isSubStructure(A.right,B);
+            
+    }
+
+    boolean dfs(TreeNode A, TreeNode B)
+    {
+        if(A==null&&B==null)
+        {
+            return true;
+        }
+        else if(A==null)
+        {
+            return false;
+        }
+        else if (B==null)
+        {
+            return true;
+        }
+        else
+        {
+            if(A.val==B.val)
+            {
+                return dfs(A.left,B.left)&&dfs(A.right,B.right);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
+```
+
+关键点是边界的处理。
+
+### [匹配类二叉树题目总结](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/solution/pi-pei-lei-er-cha-shu-ti-mu-zong-jie-by-z1m/)
+
+## [剑指 Offer 27. 二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode mirrorTree(TreeNode root) {
+
+        if(root!=null)
+        {
+            TreeNode a=root.left;
+            root.left=root.right;
+            root.right=a;
+            mirrorTree(root.left);
+            mirrorTree(root.right);
+
+        }
+        return root;
+
+    }
+}
+```
+
+就这？
+
+## [剑指 Offer 28. 对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+
+        if(root==null)
+        {
+            return true;
+        }
+            else{
+        return dfs(root.left,root.right);
+            }
+
+    }
+
+    boolean dfs(TreeNode left,TreeNode right)
+    {   
+        if(left==null&&right==null)
+        {
+            return true;
+        }
+        else if(left==null||right==null)
+        {
+            return false;
+        }
+        if(left.val==right.val)
+        {
+            return dfs(left.left,right.right)&&dfs(left.right,right.left);
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+}
+```
+
+参照26题的思想。收藏大佬笔记：
+
+> 做递归思考三步：
+>
+> 1. 递归的函数要干什么？
+>
+> - 函数的作用是判断传入的两个树是否镜像。
+> - 输入：TreeNode left, TreeNode right
+> - 输出：是：true，不是：false
+>
+> 1. 递归停止的条件是什么？
+>
+> - 左节点和右节点都为空 -> 倒底了都长得一样 ->true
+> - 左节点为空的时候右节点不为空，或反之 -> 长得不一样-> false
+> - 左右节点值不相等 -> 长得不一样 -> false
+>
+> 1. 从某层到下一层的关系是什么？
+>
+> - 要想两棵树镜像，那么一棵树左边的左边要和二棵树右边的右边镜像，一棵树左边的右边要和二棵树右边的左边镜像
+> - 调用递归函数传入左左和右右
+> - 调用递归函数传入左右和右左
+> - 只有左左和右右镜像且左右和右左镜像的时候，我们才能说这两棵树是镜像的
+>
+> 1. 调用递归函数，我们想知道它的左右孩子是否镜像，传入的值是root的左孩子和右孩子。这之前记得判个root==null。
+
+## [剑指 Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
+
+```java
+class Solution {
+    public int[] spiralOrder(int[][] matrix) {
+        int x=0,y=0,count=0;
+        if(matrix.length==0)
+        {
+            return new int [0];
+        }
+        int you=matrix[0].length-1,xia=matrix.length-1,zuo=0,shang=0;
+        
+        int p=matrix.length*matrix[0].length;
+        int []result=new int [p];
+        
+
+        while(count<p&&x>=0&&y>=0&&x<=matrix[0].length-1&&y<=matrix.length-1)
+        {
+            //左上
+            x=zuo;
+            y=shang;
+
+
+            while(x<=you&&count<p)
+            {
+            result[count]=matrix[y][x];
+            count++;
+            x++;
+            }
+
+            //右上
+            shang++;
+            x=you;
+            y=shang;
+
+            while(y<=xia&&count<p)
+            {
+            result[count]=matrix[y][x];
+            y++;
+            count++;
+            }
+
+            //左下
+            you--;
+            x=you;
+            y=xia;
+           
+            while(x>=zuo&&count<p)
+            {
+               
+            result[count]=matrix[y][x];
+            x--;
+            count++;
+            }
+
+            //右下
+            xia--;
+            x=zuo;
+            y=xia;
+            
+            while(y>=shang&&count<p)
+            {
+               
+            result[count]=matrix[y][x];
+            y--;
+            count++;
+            }
+            zuo++;
+
+
+
+           
+
+            
+        }
+        return result;
+
+    }
+}
+```
+
+上面是自己的垃圾算法。
+
+还可以大循环按圈走,小循环按边走。
+
+## [剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)
+
+```java
+class MinStack {
+    Stack<Integer> A, B;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+            A=new Stack<>();
+            B=new Stack<>();
+    }
+    
+    public void push(int x) {
+
+        A.push(x);
+        if(!B.isEmpty()&&x<=B.peek())
+        {
+            B.push(x);
+        }
+
+        else if (B.isEmpty())
+        {
+            B.push(x);
+        }
+
+    }
+    
+    public void pop() {
+                    int mark=A.pop();
+                    if(mark==B.peek())
+                    {
+                    B.pop();
+                    }
+    }
+    
+    public int top() {
+            return A.peek();
+    }
+    
+    public int min() {
+            return B.peek();
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.min();
+ */
+```
+
++ 思路是使用两个栈，一个栈实现正常功能，另一个实现min功能。
+
++ 一个栈的思路：判断现push元素是否小于min，若小于则push原min，然后push新min。
+
+  
+
+## [剑指 Offer 31. 栈的压入、弹出序列](https://leetcode-cn.com/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/)
+
+```java
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Deque<Integer> A = new LinkedList<>();
+            int pu=0,po=0;
+            while(pu<pushed.length)
+            {
+                if(pushed[pu]!=popped[po])
+                {
+                    A.push(pushed[pu]);
+                    pu++;
+                }
+                else
+                {
+                    po++;
+                    pu++;
+                    
+                    while(!A.isEmpty()&&po<popped.length&&A.peek()==popped[po])
+                    {
+                        po++;
+                        A.pop();
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+            }
+
+            while(!A.isEmpty())
+            {
+                if(A.pop().equals(popped[po]))
+                {
+                    po++;
+                }
+            }
+
+            if(po==popped.length)
+            {
+                return true;
+            }
+            else
+
+            {
+                return false;
+            }
+
+    }
+}
+```
+
++ 模拟法。注意判断能否连续pop出。
+
+## [剑指 Offer 32 - I. 从上到下打印二叉树](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/)
+
+
+
+tag：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] levelOrder(TreeNode root) {
+        Queue<Integer> result=new LinkedList<>();
+        Queue<TreeNode> waitingList=new LinkedList<TreeNode>();
+        int count=0;
+
+        if(root==null)
+        {
+            return new int [0];
+        }
+        waitingList.add(root);
+        while(!waitingList.isEmpty())
+        {
+            TreeNode a=waitingList.poll();
+            result.add(a.val);
+            count++;
+            if(a.left!=null)
+            {
+                waitingList.add(a.left);
+            }
+            if(a.right!=null)
+            {
+                waitingList.add(a.right);
+            }
+            
+
+        }
+        int [] asn=new int [count];
+        int n=0;
+        while(!result.isEmpty())
+        {
+                asn[n]=result.poll();
+                n++;
+        }
+        return asn;
+        
+    }
+}
+```
+
++ 注意 BFS：使用Queue+一个while循环可以解决问题。
+
+  
+
+
+
+## [剑指 Offer 32 - II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> waitingList =new LinkedList<>();
+        Queue<Integer> result=new LinkedList<>();
+        List<List<Integer>> an=new ArrayList();
+
+        if(root==null)
+        {
+           return an;
+        }
+        int m=0;
+
+        result.add(m);
+        waitingList.add(root);
+        
+        while(!waitingList.isEmpty())
+        {
+            TreeNode a=waitingList.poll();
+            int p=result.poll();
+            if(p>an.size()-1)
+            {
+            an.add(new ArrayList());
+            }
+            an.get(p).add(a.val);
+            m=p+1;
+            if(a.left!=null)
+            {
+                result.add(m);
+                waitingList.add(a.left);
+
+            }   
+            if(a.right!=null)
+            {
+                result.add(m);
+                waitingList.add(a.right);
+
+
+
+            }   
+
+        }
+
+        // List<List<Integer>> cancel=new ArrayList();
+        // cancel.add(new ArrayList());
+        // an.removeAll(cancel);
+
+return an;
+
+
+
+
+    }
+}
+```
+
++ 新增了层数的判断。使用变量标记。
+
++ LinkedList类实现了Queue接口，因此我们可以把LinkedList当成Queue来用。
+
++ 主要an.get()方法，可以得到第几个。
+
+  > LinkedeList和ArrayList的区别
+  >
+  > 1、数据结构不同
+  >
+  > ArrayList是Array(动态数组)的数据结构，LinkedList是Link(链表)的数据结构。
+  >
+  > 2、效率不同
+  >
+  > 当随机访问List（get和set操作）时，ArrayList比LinkedList的效率更高，因为LinkedList是线性的数据存储方式，所以需要移动指针从前往后依次查找。
+  >
+  > 当对数据进行增加和删除的操作(add和remove操作)时，LinkedList比ArrayList的效率更高，因为ArrayList是数组，所以在其中进行增删操作时，会对操作点之后所有数据的下标索引造成影响，需要进行数据的移动。
+  >
+  > 3、自由性不同
+  >
+  > ArrayList自由性较低，因为它需要手动的设置固定大小的容量，但是它的使用比较方便，只需要创建，然后添加数据，通过调用下标进行使用；而LinkedList自由性较高，能够动态的随数据量的变化而变化，但是它不便于使用。
+  >
+  > 4、主要控件开销不同
+  >
+  > ArrayList主要控件开销在于需要在lList列表预留一定空间；而LinkList主要控件开销在于需要存储结点信息以及结点指针信息。
+
+
+
+## [剑指 Offer 32 - III. 从上到下打印二叉树 III](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+            Queue<TreeNode>  wait =new LinkedList<>();
+            List<List<Integer>> result=new LinkedList<>();
+            int m=0;
+            if(root==null)
+            {
+                return new LinkedList<>();
+            }
+            else
+            {
+                wait.add(new TreeNode(m));
+                wait.add(root);
+            }
+
+            while(!wait.isEmpty())
+            {
+                int level=wait.poll().val;
+                if(level>result.size()-1)
+                {
+                    result.add(new LinkedList<>());
+                }
+                TreeNode a=wait.poll();
+                result.get(level).add(a.val);
+
+
+               m=level+1;
+                
+                    if(a.left!=null)
+                    {
+                        wait.add(new TreeNode(m));
+                        wait.add(a.left);
+                    }
+                    if(a.right!=null)
+                    {
+                        wait.add(new TreeNode(m));
+                        wait.add(a.right);
+                    }
+                
+                
+            }
+
+            for(int i=0;i<result.size();i++)
+            {
+                if(i%2==1)
+                {
+                    Collections.reverse(result.get(i));
+                
+                }
+            }
+
+            return result;
+
+
+
+
+    }
+}
+```
+
+ 
+
+
+
+在前面的例子里加上特定层数的反转。（辣鸡方法）
+
++ 注意
+
+  ```java
+  Collections.reverse(result.get(i));
+  ```
+
+  其中LinkedList实现了collections接口，可以这样用。
+
+PS：
+
+> Java接口和Java抽象类最大的一个区别，就在于Java抽象类可以提供某些方法的部分实现，而Java接口不可以**（就是interface中只能定义方法，而不能有方法的实现，而在abstract class中则可以既有方法的具体实现，又有没有具体实现的抽象方法）**
+>
+> Java接口是定义混合类型的理想工具，混合类表明一个类不仅仅具有某个主类型的行为，而且具有其他的次要行为。
+
+
+
+
+
++ 这个答案我觉得很好，多用一个队列，然后使用addLast和addFirst特性来做。
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if(root != null) queue.add(root);
+        while(!queue.isEmpty()) {
+            LinkedList<Integer> tmp = new LinkedList<>();
+            for(int i = queue.size(); i > 0; i--) {
+                TreeNode node = queue.poll();
+                if(res.size() % 2 == 0) tmp.addLast(node.val); // 偶数层 -> 队列头部
+                else tmp.addFirst(node.val); // 奇数层 -> 队列尾部
+                if(node.left != null) queue.add(node.left);
+                if(node.right != null) queue.add(node.right);
+            }
+            res.add(tmp);
+        }
+        return res;
+    }
+}
+
+
+```
+
+## [剑指 Offer 33. 二叉搜索树的后序遍历序列](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/)
+
+```java
+class Solution {
+    public boolean verifyPostorder(int[] postorder) {
+        
+        return helper(postorder,0,postorder.length-1);
+
+    }
+
+    boolean helper(int[] postorder,int start,int end)
+    {
+
+        if(!(start<end))
+        {
+            return true;
+        }
+        int small=start;
+        while(postorder[small]<postorder[end])
+        {
+            small++;
+        }
+        int big=small;
+        while(postorder[big]>postorder[end])
+        {
+            big++;
+        }
+        if(big==end)
+        {
+            
+            return helper(postorder,start,small-1)&&helper(postorder,small,end-1);
+        }
+        else
+
+        {
+            return false;
+        }
+
+
+    }
+}
+
+
+```
+
++ 没做出来的主要原因是没认清二叉搜索树的定义（不是平衡的）。
++ 可以使用传数组+开始+结束下标的方式进行递归。
+
+
+
+## [剑指 Offer 34. 二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+            List<List<Integer>> result=new LinkedList<>();
+
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<Integer> wait=new LinkedList<>();
+        dfs(root,sum,wait);
+        return result;
+
+    }
+
+       void dfs(TreeNode root, int sum,List<Integer> li)
+     {
+            if(root==null)
+            {
+                return;
+            }
+            List<Integer> lili=new LinkedList<>();
+            lili.addAll(li);
+            if(root.left==null&&root.right==null)
+            {
+                if(sum==root.val)
+                {
+                    lili.add(root.val);
+                    result.add(lili);
+                    return ;
+                    
+                }
+                return ;
+                
+            }
+            
+
+            int val=root.val;
+            int newSum=sum-val;
+            lili.add(val);
+            if(root.left!=null)
+            {
+
+                dfs(root.left,newSum,lili);
+            }
+            if(root.right!=null)
+            {
+                dfs(root.right,newSum,lili);
+            }
+
+
+
+     }
+}
+```
+
+![image-20210214005048849](/Users/mac/Library/Application Support/typora-user-images/image-20210214005048849.png)
+
+纪念一下，自己写的垃圾算法。
+
++  lili.addAll(li); 复制整个数组到新的数组可以用addAll()方法。
+
+## [剑指 Offer 35. 复杂链表的复制](https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/)
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+class Solution {
+    public Node copyRandomList(Node head) {
+        if(head==null)
+        {
+            return null;
+        }
+
+        Map<Node,Node> map=new HashMap<>();
+        Node point=head;
+        
+
+
+        while(point!=null)
+
+        {
+            
+            map.put(point, new Node(point.val));
+            
+            point=point.next;
+        }
+
+        point=head;
+        while(point!=null)
+        {
+            map.get(point).next=map.get(point.next);
+            map.get(point).random=map.get(point.random);
+            point=point.next;
+
+        }
+        return map.get(head);
+        
+    }
+}
+```
+
++ 注意hash的使用方法
+
++ ```java
+  Map<Node, Node> map = new HashMap<>();
+              map.put(point, new Node(point.val));
+              map.get(point).next=map.get(point.next);
+  
+  ```
+
+  https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/solution/jian-zhi-offer-35-fu-za-lian-biao-de-fu-zhi-ha-xi-/
+
+  还有借用原链表，复制一份新链表+  .next，然后再拆开的办法。
+
+## [剑指 Offer 36. 二叉搜索树与双向链表](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/)
+
++ 这题是关键是二叉搜索树的性质：中序遍历为保证由小到大。
+
++ 实现中序遍历，即把代码放中间，然后dfs递归。
+
++ 注意头尾的处理
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+    Node pre,head;
+    public Node treeToDoublyList(Node root) {
+        if(root!=null)
+        {
+        dfs(root);
+
+
+        }
+        else
+        {
+            return null;
+        }
+
+        pre.right=head;
+        head.left=pre;
+        return head;
+
+        
+    }
+
+    void dfs(Node cur)
+    {
+        
+        if(cur==null)
+        {
+            return ;
+        }
+                int a=cur.val;
+
+        dfs(cur.left);
+        if(pre==null)
+        {
+            head=cur;
+        }
+        cur.left=pre;
+        if(pre!=null)
+        {
+        pre.right=cur;
+        }
+        pre=cur;
+
+        dfs(cur.right);
+    }
+}
+```
+
+## [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
+
+```java
+class Solution {
+
+    char[] pool;
+    List<String> answer=new LinkedList<String>();
+    public String[] permutation(String s) {
+            pool=s.toCharArray();
+            dfs(0);
+            return answer.toArray(new String[answer.size()]);
+
+    }
+
+    void dfs(int x)
+    {
+        if(x==pool.length-1)
+        {
+            answer.add(String.valueOf(pool));///////////
+        }
+        HashSet set=new HashSet<>();
+        for(int i=x;i<pool.length;i++)
+        {
+            if(set.contains(pool[i]))
+            {
+                continue ;
+            }
+            set.add(pool[i]);
+            swap(i,x);
+            dfs(x+1);
+            swap(x,i);
+        }
+    }
+
+
+    void swap(int a,int b)
+    {
+        char temp=pool[a];
+        pool[a]=pool[b];
+        pool[b]=temp;
+    }
+}
+```
+
++ 在这用『换位』来表示各种组合。
+
++ String.toCharArray();
+
++ String.valueOf(pool)//将基本数据型态转换成 String
+
++ HashSet set=new HashSet<>();//该容器中只能存储不重复的对象。
+
++    void swap(int a,int b)
+      {
+          char temp=pool[a];
+          pool[a]=pool[b];
+          pool[b]=temp;
+      }
+
+  技巧有点多
+
+## [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+            HashMap<Integer,Integer> map= new HashMap<>();
+            int i=0;
+            while(i<nums.length)
+            {
+                if(map.get(nums[i])==null)
+                {
+                    map.put(nums[i], 1);
+                    
+                }
+                else
+                {
+                    int a=map.get(nums[i])+1;
+                    if(a>nums.length/2)
+                    {
+                        return nums[i];
+                    }
+                    map.remove(nums[i]);
+                    map.put(nums[i], a);
+                }
+                i++;
+                
+            }
+            return nums[0];
+            
+    }
+}
+```
+
+![image-20210216020720636](/Users/mac/Library/Application Support/typora-user-images/image-20210216020720636.png)
+
+又费时间又费空间，我真牛逼
+
+https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/solution/mian-shi-ti-39-shu-zu-zhong-chu-xian-ci-shu-chao-3/
+
++ ！！！！众数问题可以用摩尔投票法！！！！
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+            //HashMap<Integer,Integer> map= new HashMap<>();
+            // if(nums.length==1)
+            // {
+            //     return nums[0];
+            // }
+            int i=0;
+            int voute=0;
+            int z=nums[0];
+            while(i<nums.length)
+            {
+                if(z!=nums[i])
+                {
+                    voute--;
+                }
+                else
+                {
+                    voute++;
+                }
+                if(voute==0)
+                    {
+                    z=nums[i];
+                    }
+                else
+                {
+                    i++;
+                }
+                    
+            }
+            return z;
+            
+    }
+}
+```
+
+## [剑指 Offer 40. 最小的k个数](https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/)
+
+法一：快排。注意点很多
+
+```java
+class Solution {
+    public int[] getLeastNumbers(int[] arr, int k) {
+        qs(0,arr.length-1,arr);
+            return Arrays.copyOf(arr, k);
+
+    }
+
+
+
+
+void qs(int zuo,int you,int []arr)
+{
+    if(zuo>=you)
+    {
+        return;
+    }
+    int origzuo=zuo,origyou=you;
+    
+    int base=arr[zuo];
+    int nextbase=0;
+    while (zuo < you){
+            while (zuo < you && arr[you] >= base){
+                you -- ;
+            }
+            while (zuo < you && arr[zuo] <= base){
+                zuo ++ ;
+            }
+            swap(zuo,you,arr);
+        }
+        swap(origzuo,zuo,arr);
+        nextbase=zuo;
+        qs(origzuo,nextbase-1,arr);
+        qs(nextbase+1,origyou,arr);
+
+
+}
+
+void swap(int one,int two,int []arr)
+{
+    int temp=arr[one];
+    arr[one]=arr[two];
+    arr[two]=temp;
+}
+
+
+}
+```
+
++ 大循环嵌套俩小循环，大循环判断条件为俩哨兵相遇。
++ 注意若取最左的值为基准，则要右边先动。
+
+原因：因为最终停下后，0号位需要放置一个小于baseline的数，而右边先动则保证了最终取出的数符合左👈🏻 边的规则，即小于baseline。
+
++ 注意在判断哨兵移动时需要取等号。
++ 每次都要判断两者有无相遇。
++ 主要保存原数组范围。
+
+法二：大顶堆。
+
+```java
+class Solution {
+    public int[] getLeastNumbers(int[] arr, int k) {
+        if(k==0||arr==null)
+        {
+                return new int [0];
+        }
+        //List<Integer>result=new LinkedList<Integer>();
+        int [] result=new int [k];
+        PriorityQueue<Integer> dui=new PriorityQueue<>(k,new Comparator<Integer>()
+        {
+            //@override
+            public int compare (Integer o1,Integer o2)
+            {
+                return o2-o1;
+            }
+            });
+            int count=0;
+        while(count<arr.length)
+        {
+            if(count<k)
+            {
+                dui.offer(arr[count]);
+            }
+            else
+            {
+                if(arr[count]<dui.peek())
+                {
+                    dui.poll();
+                    dui.offer(arr[count]);
+                }
+            }
+            count++;
+        }
+        count=0;
+        while(!dui.isEmpty())
+        {
+                result[count]=dui.poll();
+                count++;
+        }
+        return result;
+        
+        }
+}
+
+```
+
+> https://blog.csdn.net/hefenglian/article/details/81807527
+
+注意点也很多。
+
++ PriorityQueue默认为小顶堆，需要override Comparator，以传参的形式。或    PriorityQueue<Integer> dui=new PriorityQueue<>((r1,r2)->r2-r1);
++ PriorityQueued的add是offer
+
+## [剑指 Offer 42. 连续子数组的最大和](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)
+
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+            // if(nums.length==0)
+            // {
+            //     return 0;
+            // }
+            int [] result=new int [nums.length];
+            int count=0;
+            
+            result[count++]=nums[0];
+
+
+            while(count<result.length)
+            {
+                if(result[count-1]<0)
+                {
+                    result[count]=nums[count];
+                }
+                else
+                {
+                    result[count]=nums[count]+result[count-1];
+                }
+                count++;
+            }
+            count=0;
+            int max=Integer.MIN_VALUE;
+            while(count<result.length)
+            {
+                if(result[count]>max)
+                {
+                    max=result[count];
+                }
+                count++;
+            }
+           return max;
+            
+    }
+}
+```
+
+动态规划。
+
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+            
+            int count=1;
+
+            while(count<nums.length)
+            {
+                if(nums[count-1]<0)
+                {
+                    nums[count]=nums[count];
+                }
+                else
+                {
+                    nums[count]=nums[count]+nums[count-1];
+                }
+                count++;
+            }
+            count=0;
+            int max=Integer.MIN_VALUE;
+            while(count<nums.length)
+            {
+                if(nums[count]>max)
+                {
+                    max=nums[count];
+                }
+                count++;
+            }
+           return max;
+            
+    }
+}
+```
+
+不浪费空间版本。
+
+## [剑指 Offer 44. 数字序列中某一位的数字](https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/)
+
+```java
+class Solution {
+    public int findNthDigit(int n) {
+        //List<Character> save=new LinkedList<Character>();
+       
+        int counter=0;
+        int count=1;
+        int markp=0;
+
+        while(count<n)
+        {
+            String a=String.valueOf(count);
+            int p=0;
+            while(p<a.length())
+            {
+                counter++;
+                if(counter==n)
+                {
+                    markp=p;
+                    break;
+                }
+                p++;
+            }
+            if(counter==n)
+                {
+                    break;
+                }
+            count++;
+           
+        }
+        
+        String a=String.valueOf(count);
+        char p=a.charAt(markp);
+        String stringc = String.valueOf(p);
+        int sdaf=Integer.parseInt(stringc);
+        
+
+
+
+        return sdaf;
+        
+    }
+}
+```
+
+```java
+class Solution {
+    public int findNthDigit(int n) {
+        //List<Character> save=new LinkedList<Character>();
+       
+        int counter=0;
+        int count=1;
+        int markp=0;
+
+        while(count<n)
+        {
+            String a=String.valueOf(count);
+            
+
+            if(counter>=997)
+            {
+                        int y=0;
+            }
+            counter=a.length()+counter;
+            if(counter>n)
+                {
+                    markp=n-(counter-a.length())-1;
+                    //count++;
+                    
+                    break;
+                }
+                else if(counter==n)
+                {
+                    markp=a.length()-1;
+                    //count--;
+                    break;
+                }
+            count++;
+           
+        }
+
+        // while(counter<n)
+        //     {
+        //         counter++;
+        //         markp++;
+
+        //     }
+
+        
+        
+        String a=String.valueOf(count);
+        char p=a.charAt(markp);
+        String stringc = String.valueOf(p);
+        int sdaf=Integer.parseInt(stringc);
+        
+
+
+
+        return sdaf;
+        
+    }
+}
+```
+
+
+
+思成的方法，爆时间了。
+
++ 注意后面取int某一位，需要 1.转String 2. 取char 3.转String 4.转Int
+
+  同方法的StringBuilder版本
+
+  ```java
+  class Solution {
+      public static int findNthDigit(int n) {
+          StringBuilder s = new StringBuilder();
+          int all = 0;
+          for(int i = 0 ;all <= n ; i++){
+              all += ((i / 10) + 1);
+              s.append("" + i);
+          }
+          return Integer.parseInt(String.valueOf(s.charAt(n)));
+      }
+  }
+  ```
+
+  标注答案，傻逼题找规律
+
+  ```java
+  javaclass Solution {
+      public int findNthDigit(int n) {
+          int digit = 1;   // n所在数字的位数
+          long start = 1;  // 数字范围开始的第一个数
+          long count = 9;  // 占多少位
+          while(n > count){
+              n -= count;
+              digit++;
+              start *= 10;
+              count = digit * start * 9;
+          }
+          long num = start + (n - 1) / digit;
+          return Long.toString(num).charAt((n - 1) % digit) - '0';
+      }
+  }
+  ```
+
+  
+
+## [剑指 Offer 45. 把数组排成最小的数](https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/)
+
+```java
+class Solution {
+    public String minNumber(int[] nums) {
+        StringBuilder res=new StringBuilder();
+        Queue q=new PriorityQueue<String>(new Comparator<String>()
+        {
+            public int compare(String o1,String o2)
+
+            {
+                return (o1+o2).compareTo(o2+o1);
+            }
+        });
+        int count=0;
+        while(count<nums.length)
+        {
+            q.add(nums[count++]+"");
+
+        }
+        while(!q.isEmpty())
+        {
+            res.append(q.poll());
+        }
+        return res.toString();
+    }
+}
+
+
+
+
+```
+
++ StringBuilder res=new StringBuilder(); 注意是append
+
++ 最关键的是，(o1+o2).compareTo(o2+o1)
+
++ ```java
+   Queue q=new PriorityQueue<String>(new Comparator<String>()
+          {
+              public int compare(String o1,String o2)
+    
+              {
+                  return (o1+o2).compareTo(o2+o1);
+              }
+          });
+  ```
+
+  小顶堆
+
+## [剑指 Offer 46. 把数字翻译成字符串](https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/)
+
+```java
+class Solution {
+    public int translateNum(int num) {
+        String snum=String.valueOf(num);
+        char[] cnum=snum.toCharArray();
+        int []dp=new int [cnum.length];
+        dp[0]=1;
+        //dp[1]=1;
+        int count=1;
+        
+
+        while(count<cnum.length)
+        {
+            int b=Integer.parseInt(String.valueOf(cnum[count-1]));
+            int c=Integer.parseInt(String.valueOf(cnum[count]));
+            int a=b*10+c;
+            dp[count]=dp[count-1];
+            if(a<26&&a>9)
+            {
+                if(count==1)
+                {
+                    dp[1]=2;
+                }
+                else
+                {
+                    dp[count]=dp[count-1]+dp[count-2];
+                }
+            }
+            else
+            {
+                if(count==1)
+                {
+                    dp[1]=1;
+                }
+            }
+            count++;
+        }
+        return dp[cnum.length-1];
+    }
+}
+```
+
+动态规划。
+
++ b=Integer.parseInt(String.valueOf(cnum[count-1]));///char转int
++ 可以用滚动数组优化
++ 最重要的逻辑：*f*(*i*)=*f*(*i*−1)+*f*(*i*−2)
+
+
+
+## 
+
+## [剑指 Offer 47. 礼物的最大价值](https://leetcode-cn.com/problems/li-wu-de-zui-da-jie-zhi-lcof/)
+
+```java
+class Solution {
+    public int maxValue(int[][] grid) {
+            int m= grid.length ;
+            int n=grid[0].length;
+            int [][]res=new int [m][n];
+           
+            
+
+            for(int i=0;i<m;i++)
+            {
+                for(int j=0;j<n;j++)
+                {
+                    int a=0,b=0;
+                    if(i!=0)
+                    {
+                        a=res[i-1][j];
+                      
+                    }
+                    if(j!=0)
+                    {
+                        b=res[i][j-1];
+                    }
+                        int p=grid[i][j];
+                        
+                        res[i][j]=Math.max(a, b)+p;
+                        int q=res[i][j];
+                        int wfweewf=q+1;
+                    
+                }
+            }
+            return res[m-1][n-1];
+    }
+}
+```
+
+动态规划，关键点在于一个点的最大值等于其上点或左点的最大值+本身值。 
+
++ 可只使用自己的原数组进行
+
+
+
+## 
+
+## [剑指 Offer 48. 最长不含重复字符的子字符串](https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/)
+
+```java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+
+        
+        int[] dp=new int [s.length()];
+        int count=0;
+        int trueRes=0;
+        while(count<s.length())
+        {
+            int poi=count;
+            int res=0;
+            HashSet<Character> set=new HashSet<Character>();
+            while(poi<s.length()&&!set.contains(s.charAt(poi)))
+            {
+                set.add(s.charAt(poi++));
+                res++;
+            }
+            if(res>trueRes)
+            {
+                trueRes=res;
+            }
+            count++;
+        }
+        return trueRes;
+
+
+    }
+}
+```
+
+## [剑指 Offer 49. 丑数](https://leetcode-cn.com/problems/chou-shu-lcof/)
+
+```java
+class Solution {
+    public int nthUglyNumber(int n) {
+        Queue<Integer> min=new PriorityQueue<Integer>();
+        //int []dp=new int [n];
+        //dp[0]=1;
+        // dp[1]=2;
+        // dp[2]=3;
+        // dp[3]=4;
+        // dp[4]=5;
+        
+            for(int i=0;i<20;i++)
+            {
+
+                for(int m=0;m<40;m++)
+                {
+                    for(int p=0;p<40;p++)
+                    {
+                            double plus=Math.pow(2, p)*Math.pow(3, m)*Math.pow(5, i);
+
+                            min.add((int)plus);
+                    }
+                }
+            }
+            int count=1;
+            //min.poll();
+            while(count<n)
+            {
+                //dp[count++]=min.poll();
+                min.poll();
+                count++;
+            }
+            return min.poll();
+
+
+        
+
+    }
+}
+```
+
+这不炒？
+
+
+
+## [剑指 Offer 50. 第一个只出现一次的字符](https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/)
+
+```java
+class Solution {
+    public char firstUniqChar(String s) {
+            //HashSet<Character> set = new HashSet();
+            HashMap<Character,Integer> table=new HashMap<>();
+            for(int i=0;i<s.length();i++)
+            {
+                if(table.get(s.charAt(i))==null)
+                {
+                    table.put(s.charAt(i),1);
+
+                }
+                else
+                {
+                    table.put(s.charAt(i),2);
+                }
+            }
+
+            for(int i=0;i<s.length();i++)
+            {
+                if(table.get(s.charAt(i))==1)
+                {
+                    return s.charAt(i);
+                }
+               
+            }
+            return ' ';
+        
+    }
+}
+
+
+```
+
+用hashtable，舒服得一p。
+
+换成LinkedHashMap，更省时间。
+
+> 
+
+## [剑指 Offer 52. 两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        HashSet<ListNode> set=new HashSet<>();
+        ListNode pointA=headA;
+        ListNode pointB=headB;
+
+        while(pointA!=null)
+        {
+            set.add(pointA);
+            pointA=pointA.next;
+        }
+        while(pointB!=null)
+        {
+            if(set.contains(pointB))
+            {
+                return pointB;
+            }
+            else
+            {
+                pointB=pointB.next;
+            }
+        }
+        return null;
+    }
+}
+```
+
+hashmap大展神威，开销惨不忍睹
+
+双指针，绝了，A+C+B=B+C+A。
+
+> https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/solution/shuang-zhi-zhen-fa-lang-man-xiang-yu-by-ml-zimingm/
+
+## [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+
+
+
+      int left=0,right=nums.length,count=0;
+      if(right==0)
+      {
+          return 0;
+      }
+      while(left<right)
+      {
+          int mid=(left+right)/2;
+          if(nums[mid]>target)
+          {
+              right=mid-1;
+          }
+          else {
+            if(nums[mid]<target)
+            {
+                left=mid+1;
+            }
+            else
+            {
+                left=mid;
+                break;
+            }
+          }
+      }
+        right=left+1;
+       while(left>=0&&left<nums.length&&nums[left]==target)
+                {
+                    left--;
+                    count++;
+                }
+                while(right>=0&&right<nums.length&&nums[right]==target)
+                {
+                    right++;
+                    count++;
+                }
+      return count;
+    }
+}
+```
+
+据说只能用二分。
+
++ 关键点一
+
+  ```
+   left=mid+1;
+    right=mid-1;
+  ```
+
++ 关键点二
+
+  后面的个数计算while要在定位while之外。
+
+  + ```
+     right=left+1;
+    ```
+
+    
+
+## [剑指 Offer 53 - II. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
+
+```c++
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        
+
+
+        int left=0,right=nums.size();
+        while(right>left)
+        {
+            int mid=(left+right)/2;
+            if(mid!=nums[mid])
+            {
+                right=mid;
+            }
+            else
+            {
+                left=mid+1;
+            }
+        }
+        return left;
+        
+    }
+};
+```
+
+# 对从小到大排好的数组，一定要 left=mid+1。否则，就会一直有left = mid=right-1<right,导致无法跳出循环。
+
+## [剑指 Offer 54. 二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    int res=0;
+    vector<int>li;
+    
+public:
+    int kthLargest(TreeNode* root, int k) {
+        int m=0;
+        dfs(root);
+        return li[li.size()-k];
+
+        
+    }
+
+    void dfs(TreeNode* root)
+    {
+        if(root==NULL)
+        {
+            return ;
+        }
+
+        dfs(root->left);
+        li.push_back(root->val);
+        dfs(root->right);
+        
+    }
+};
+```
+
+遇到二叉树==中序遍历产生有序数组。
+
+## [剑指 Offer 55 - I. 二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/)
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    int level=0;
+public:
+    int maxDepth(TreeNode* root) {
+           dfs(root,1);
+           return level;
+    }
+
+    void dfs(TreeNode* root,int m)
+    {
+        if(root==NULL)
+        {
+            return ;
+        }
+        if(m>level)
+        {
+            level=m;
+        }
+        dfs(root->left,m+1);
+        dfs(root->right,m+1);
+    }
+
+};
+```
+
+如果不能用递归
+
+```c
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    
+public:
+    int maxDepth(TreeNode* root) {
+          TreeNode* point=root;
+          queue<TreeNode*> que;
+//      
+        if(root==NULL)
+        {
+            return 0;
+        }
+          que.push(root);
+            int level=0;
+          while(!que.empty())
+          {
+            queue<TreeNode*> que2;
+            while(!que.empty())
+            {
+                TreeNode* p=que.front();
+                if(p->left!=NULL)
+                {
+                    que2.push(p->left);
+                }
+                if(p->right!=NULL)
+                {
+                    que2.push(p->right);
+                }
+                que.pop();
+                
+            }
+            while(!que2.empty())
+            {
+                TreeNode* p=que2.front();
+                que.push(p);
+                que2.pop();
+            }
+            level++;
+
+          }
+
+           return level;
+    }
+
+
+
+};
+```
+
+记好了，BFS。
+
+## [剑指 Offer 55 - II. 平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
+
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+
+        return dfs(root);
+        
+    }
+
+    int getHigh(TreeNode* root){
+        if(root==NULL) return 0;
+        int a=getHigh(root->right);
+        int b=getHigh(root->left);
+        return (a>b?a:b)+1;
+    }
+
+    bool dfs(TreeNode* root)
+    {
+        if(root==NULL)
+        {
+            return true;
+        }
+        if(abs(getHigh(root->left)-getHigh(root->right))>1)
+        {
+            return false;
+        }
+        
+        else
+        {
+            return dfs(root->left)&&dfs(root->right);
+        }
+    }
+};
+```
+
+## [剑指 Offer 57 - II. 和为s的连续正数序列](https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/)
+
+```C++
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+            int left=1,right=2;
+            
+            vector<vector<int>> res;
+            while(left<target)
+            {
+                int sum=(left+right)*(right-left+1)/2;
+                if(sum>target)
+                {
+                    left++;
+                }
+                else if(sum<target)
+                {
+                    right++;
+                }
+                else
+                {
+                    vector<int> ans;
+                    int oldleft=left;
+                    while(left<=right)
+                    {
+                        ans.push_back(left);
+                        left++;
+                    }
+                    left=oldleft+1;
+                    res.push_back(ans);
+                }
+                
+            }
+            return res;
+    }
+};
+```
+
+双指针
+
+## [剑指 Offer 59 - I. 滑动窗口的最大值](https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/)
+
+单调队列法，即搞一个双向队列然后维持他的递增或递减性质。
+
+```c++
+// class Solution {
+// public:
+//     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+//         //判断特殊情况
+//         int n = nums.size();
+//         if(n < k || k <= 0) return {};
+//         //滑动窗口的前后指针
+//         int low =  1 - k,high = 0; 
+        
+//         deque<int> dq;//双端队列
+//         vector<int> res;
+        
+//         while(high < n){
+//             //判断滑窗的low端是否是最大的元素
+//             if(low >= 1 && nums[low - 1] == dq[0]) dq.pop_front();
+ 
+//             while(!dq.empty() && dq[0] < nums[high]) dq.pop_front();//小于nums[high]的元素出队
+//             while(!dq.empty() && dq[dq.size()-1] < nums[high]) dq.pop_back();//小于nums[high]的元素出队
+
+//             //此时的high指针进队
+//             dq.push_back(nums[high]);
+
+//             if(low >= 0) res.push_back(dq[0]);//当low >= 0，滑窗已经形成
+//             low ++;
+//             high ++;
+//         }
+//         return res;
+//     }
+// };
+```
+
